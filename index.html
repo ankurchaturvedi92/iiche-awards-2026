@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IIChE Industry Awards 2026 | Nomination Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0a2540;
+      --primary-light: #123d68;
+      --accent: #0070f3;
+      --accent-gradient: linear-gradient(135deg, #0070f3 0%, #00c4cc 100%);
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --success: #10b981;
+      --radius: 12px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 10px 25px -5px rgba(10,37,64,0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    /* Header & Branding */
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 1.5rem 1rem;
+      border-bottom: 3px solid #00c4cc;
+    }
+
+    .header-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand-badge {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #38bdf8;
+    }
+
+    .header-titles h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .header-titles p {
+      color: #94a3b8;
+      font-size: 0.85rem;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 900px;
+      margin: 2.5rem auto;
+      padding: 0 1rem;
+    }
+
+    .intro-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 2rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 2rem;
+    }
+
+    .badge-pill {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: #e0f2fe;
+      color: #0369a1;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .intro-card h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .intro-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Form Styles */
+    .form-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 640px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    label span.required {
+      color: #ef4444;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.75rem 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      background: #fafafa;
+      transition: all 0.2s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.12);
+    }
+
+    /* Category Cards Radio */
+    .category-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .category-card {
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+      background: #fafafa;
+    }
+
+    .category-card:hover {
+      border-color: #cbd5e1;
+      transform: translateY(-2px);
+    }
+
+    .category-card input[type="radio"] {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: auto;
+    }
+
+    .category-card.selected {
+      border-color: var(--accent);
+      background: #f0f7ff;
+    }
+
+    .cat-tag {
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .cat-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--primary);
+      margin: 0.25rem 0;
+    }
+
+    .cat-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* File Dropzones */
+    .file-dropzone {
+      border: 2px dashed #cbd5e1;
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      background: #f8fafc;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.2s ease;
+    }
+
+    .file-dropzone:hover {
+      border-color: var(--accent);
+    }
+
+    .file-dropzone input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .upload-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-muted);
+    }
+
+    .dropzone-text {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .dropzone-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .file-meta-preview {
+      margin-top: 0.6rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      display: none;
+    }
+
+    /* Submit Button */
+    .submit-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .submit-btn {
+      background: var(--accent-gradient);
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 9999px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 112, 243, 0.3);
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 112, 243, 0.4);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 37, 64, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-box {
+      background: white;
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+      animation: popIn 0.3s ease;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-icon {
+      width: 60px;
+      height: 60px;
+      background: #dcfce7;
+      color: var(--success);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin: 0 auto 1.2rem;
+    }
+
+    .modal-btn {
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.8rem;
+      border-radius: 8px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-container">
+      <div class="brand-wrap">
+        <div class="brand-badge">IIChE Apex</div>
+        <div class="header-titles">
+          <h1>IIChE Industry Awards 2026</h1>
+          <p>Indian Institute of Chemical Engineers | Celebrating Industrial Excellence</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="intro-card">
+      <span class="badge-pill">Call for Nominations</span>
+      <h2>Official Award Nomination Portal</h2>
+      <p>Submit your industrial breakthrough, sustainability achievement, or technological advancement for consideration by the National Jury Panel.</p>
+    </div>
+
+    <form id="awardForm">
+      <!-- Section 1: Company Profile -->
+      <section class="form-section">
+        <h3 class="section-title">1. Organization & Representative Details</h3>
+        <p class="section-subtitle">Provide company credentials and contact coordinates for verification.</p>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Organization / Company Name <span class="required">*</span></label>
+            <input type="text" name="companyName" placeholder="e.g. Bharat Petroleum Corporation Ltd" required>
+          </div>
+
+          <div class="form-group">
+            <label>Industry Sector <span class="required">*</span></label>
+            <select name="sector" required>
+              <option value="">Select industry domain</option>
+              <option value="Petrochemicals & Refining">Petrochemicals & Refining</option>
+              <option value="Fertilizers & Agro-chemicals">Fertilizers & Agro-chemicals</option>
+              <option value="Specialty & Fine Chemicals">Specialty & Fine Chemicals</option>
+              <option value="Pharmaceuticals & Biotech">Pharmaceuticals & Biotech</option>
+              <option value="Renewable & Green Hydrogen">Renewable Energy & Green Hydrogen</option>
+              <option value="Other">Other Process Industries</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Authorized Nominee / Lead Person <span class="required">*</span></label>
+            <input type="text" name="nomineeName" placeholder="Dr. / Mr. / Ms. Full Name" required>
+          </div>
+
+          <div class="form-group">
+            <label>Official Email Address <span class="required">*</span></label>
+            <input type="email" name="email" placeholder="representative@company.com" required>
+          </div>
+
+          <div class="form-group">
+            <label>Contact Phone / Mobile <span class="required">*</span></label>
+            <input type="tel" name="phone" placeholder="+91 98765 43210" required>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Award Category -->
+      <section class="form-section">
+        <h3 class="section-title">2. Select Award Category</h3>
+        <p class="section-subtitle">Choose the competitive vertical your submission targets.</p>
+
+        <div class="category-options">
+          <label class="category-card selected">
+            <input type="radio" name="category" value="Category A - Industrial Innovation" checked>
+            <span class="cat-tag">Category A</span>
+            <div class="cat-name">Industrial Innovation</div>
+            <p class="cat-desc">Novel process engineering, patented unit operations, or indigenous technology breakthroughs.</p>
+          </label>
+
+          <label class="category-card">
+            <input type="radio" name="category" value="Category B - ESG & Sustainability">
+            <span class="cat-tag">Category B</span>
+            <div class="cat-name">ESG & Sustainability</div>
+            <p class="cat-desc">Zero liquid discharge, decarbonization, energy circularity, or carbon capture achievements.</p>
+          </label>
+
+          <label class="category-card">
+            <input type="radio" name="category" value="Category C - Process Safety Excellence">
+            <span class="cat-tag">Category C</span>
+            <div class="cat-name">Process Safety & PSM</div>
+            <p class="cat-desc">Zero-incident milestones, advanced HAZOP integration, and digital safety frameworks.</p>
+          </label>
+        </div>
+      </section>
+
+      <!-- Section 3: Project Narrative -->
+      <section class="form-section">
+        <h3 class="section-title">3. Nomination Submission Details</h3>
+        <p class="section-subtitle">Summary of the technological intervention and tangible business or societal impact.</p>
+
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label>Project / Initiative Title <span class="required">*</span></label>
+            <input type="text" name="projectTitle" placeholder="e.g. Implementation of Solvent Recovery via Dividing-Wall Column" required>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Executive Summary (Max 250 words) <span class="required">*</span></label>
+            <textarea name="summary" rows="4" placeholder="Briefly outline the problem statement, engineering solution, and deployment timeline..." required></textarea>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Quantifiable Metrics & ROI Impact <span class="required">*</span></label>
+            <textarea name="metrics" rows="3" placeholder="e.g. 18% thermal efficiency gain, 4.2 KT CO2 equivalent offset, INR 12 Cr savings/year..." required></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: File Dossiers -->
+      <section class="form-section">
+        <h3 class="section-title">4. Supporting Dossiers & Presentations</h3>
+        <p class="section-subtitle">Upload official documentation. Allowed formats: PDF, PPT/PPTX, JPG, PNG (Max 12 MB each).</p>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Complete Nomination Dossier (PDF / Document) <span class="required">*</span></label>
+            <div class="file-dropzone" id="dossierZone">
+              <input type="file" id="dossierInput" accept=".pdf" required>
+              <div class="upload-icon">📄</div>
+              <div class="dropzone-text">Click or drag PDF dossier</div>
+              <div class="dropzone-hint">PDF format only (Max 12MB)</div>
+              <div class="file-meta-preview" id="dossierMeta"></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label
