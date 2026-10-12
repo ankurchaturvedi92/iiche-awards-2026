@@ -37,7 +37,6 @@
       line-height: 1.5;
     }
 
-    /* Header & Branding */
     header {
       background: var(--primary);
       color: white;
@@ -85,11 +84,11 @@
       font-size: 0.85rem;
     }
 
-    /* Main Container */
     main {
       max-width: 900px;
       margin: 2.5rem auto;
       padding: 0 1rem;
+      padding-bottom: 4rem;
     }
 
     .intro-card {
@@ -125,7 +124,6 @@
       font-size: 0.95rem;
     }
 
-    /* Form Styles */
     .form-section {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -201,7 +199,6 @@
       box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.12);
     }
 
-    /* Category Cards Radio */
     .category-options {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -255,7 +252,6 @@
       color: var(--text-muted);
     }
 
-    /* File Dropzones */
     .file-dropzone {
       border: 2px dashed #cbd5e1;
       border-radius: 10px;
@@ -307,28 +303,32 @@
       display: none;
     }
 
-    /* Submit Button */
+    /* Submit Section */
     .submit-wrap {
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 1rem;
-      margin-top: 1rem;
+      margin-top: 2rem;
+      padding: 1.5rem;
+      text-align: center;
     }
 
     .submit-btn {
       background: var(--accent-gradient);
       color: white;
       border: none;
-      padding: 1rem 2.5rem;
+      padding: 1.1rem 3rem;
       border-radius: 9999px;
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       cursor: pointer;
       box-shadow: 0 4px 15px rgba(0, 112, 243, 0.3);
       transition: all 0.2s ease;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 0.5rem;
     }
 
@@ -342,7 +342,6 @@
       cursor: not-allowed;
     }
 
-    /* Modal */
     .modal-backdrop {
       position: fixed;
       top: 0;
@@ -421,7 +420,7 @@
     </div>
 
     <form id="awardForm">
-      <!-- Section 1: Company Profile -->
+      <!-- Section 1 -->
       <section class="form-section">
         <h3 class="section-title">1. Organization & Representative Details</h3>
         <p class="section-subtitle">Provide company credentials and contact coordinates for verification.</p>
@@ -462,7 +461,7 @@
         </div>
       </section>
 
-      <!-- Section 2: Award Category -->
+      <!-- Section 2 -->
       <section class="form-section">
         <h3 class="section-title">2. Select Award Category</h3>
         <p class="section-subtitle">Choose the competitive vertical your submission targets.</p>
@@ -491,7 +490,7 @@
         </div>
       </section>
 
-      <!-- Section 3: Project Narrative -->
+      <!-- Section 3 -->
       <section class="form-section">
         <h3 class="section-title">3. Nomination Submission Details</h3>
         <p class="section-subtitle">Summary of the technological intervention and tangible business or societal impact.</p>
@@ -514,14 +513,14 @@
         </div>
       </section>
 
-      <!-- Section 4: File Dossiers -->
+      <!-- Section 4 -->
       <section class="form-section">
         <h3 class="section-title">4. Supporting Dossiers & Presentations</h3>
         <p class="section-subtitle">Upload official documentation. Allowed formats: PDF, PPT/PPTX, JPG, PNG (Max 12 MB each).</p>
 
         <div class="form-grid">
           <div class="form-group">
-            <label>Complete Nomination Dossier (PDF / Document) <span class="required">*</span></label>
+            <label>Complete Nomination Dossier (PDF) <span class="required">*</span></label>
             <div class="file-dropzone" id="dossierZone">
               <input type="file" id="dossierInput" accept=".pdf" required>
               <div class="upload-icon">📄</div>
@@ -532,4 +531,144 @@
           </div>
 
           <div class="form-group">
-            <label
+            <label>Pitch Deck / Visuals (PPTX / Images / PDF)</label>
+            <div class="file-dropzone" id="presZone">
+              <input type="file" id="presInput" accept=".ppt,.pptx,.pdf,.jpg,.jpeg,.png">
+              <div class="upload-icon">📊</div>
+              <div class="dropzone-text">Click or drag PPT or Images</div>
+              <div class="dropzone-hint">PPT, PPTX, PDF, JPG, PNG (Max 12MB)</div>
+              <div class="file-meta-preview" id="presMeta"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Submit Section -->
+      <div class="submit-wrap">
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <span>Submit Nomination for Evaluation</span>
+        </button>
+        <div id="statusIndicator" style="font-size:0.9rem; font-weight:600; color:var(--accent);"></div>
+      </div>
+    </form>
+  </main>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-box">
+      <div class="modal-icon">✓</div>
+      <h3 style="color:var(--primary); font-size:1.4rem; margin-bottom:0.5rem;">Nomination Received</h3>
+      <p style="color:var(--text-muted); font-size:0.9rem;">Your dossier has been securely archived and queued for the IIChE National Jury Panel.</p>
+      <div style="background:#f1f5f9; padding:0.75rem; border-radius:8px; margin:1.2rem 0; font-family:monospace; font-weight:700; color:var(--primary);" id="displaySubId">
+        IIChE-AWD-PENDING
+      </div>
+      <button class="modal-btn" onclick="closeModal()">Done</button>
+    </div>
+  </div>
+
+  <script>
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzcBNyJT593YpOLPC03CSJLba8rIj3ycLn8OBc8wO3FhDsdW7SDNdnFf0_TtAYc36Df/exec";
+
+    document.querySelectorAll('.category-card input').forEach(input => {
+      input.addEventListener('change', () => {
+        document.querySelectorAll('.category-card').forEach(c => c.classList.remove('selected'));
+        input.closest('.category-card').classList.add('selected');
+      });
+    });
+
+    function bindFilePreview(inputId, metaId) {
+      const input = document.getElementById(inputId);
+      const meta = document.getElementById(metaId);
+      input.addEventListener('change', () => {
+        if (input.files.length > 0) {
+          const file = input.files[0];
+          const mb = (file.size / (1024 * 1024)).toFixed(2);
+          if (file.size > 12 * 1024 * 1024) {
+            alert("File exceeds maximum allowed size of 12MB. Please compress.");
+            input.value = "";
+            meta.style.display = "none";
+            return;
+          }
+          meta.textContent = `${file.name} (${mb} MB)`;
+          meta.style.display = "block";
+        } else {
+          meta.style.display = "none";
+        }
+      });
+    }
+    bindFilePreview('dossierInput', 'dossierMeta');
+    bindFilePreview('presInput', 'presMeta');
+
+    function toBase64(file) {
+      return new Promise((resolve, reject) => {
+        if (!file) return resolve(null);
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve({
+          name: file.name,
+          mimeType: file.type || "application/octet-stream",
+          data: reader.result
+        });
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    const form = document.getElementById('awardForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusIndicator = document.getElementById('statusIndicator');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      submitBtn.disabled = true;
+      submitBtn.querySelector('span').textContent = "Encoding & Uploading Files...";
+      statusIndicator.textContent = "Please hold on, transferring files to Google Drive...";
+
+      try {
+        const dossierFile = await toBase64(document.getElementById('dossierInput').files[0]);
+        const presFile = await toBase64(document.getElementById('presInput').files[0]);
+
+        const payload = {
+          companyName: form.companyName.value,
+          sector: form.sector.value,
+          nomineeName: form.nomineeName.value,
+          email: form.email.value,
+          phone: form.phone.value,
+          category: form.category.value,
+          projectTitle: form.projectTitle.value,
+          summary: form.summary.value,
+          metrics: form.metrics.value,
+          dossierFile: dossierFile,
+          presentationFile: presFile
+        };
+
+        submitBtn.querySelector('span').textContent = "Submitting to IIChE Registry...";
+
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        document.getElementById('displaySubId').textContent = "IIChE-AWD-" + Date.now().toString().slice(-6);
+        document.getElementById('modalBackdrop').style.display = "flex";
+        form.reset();
+        document.getElementById('dossierMeta').style.display = "none";
+        document.getElementById('presMeta').style.display = "none";
+
+      } catch (err) {
+        alert("Error during submission: " + err.message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.querySelector('span').textContent = "Submit Nomination for Evaluation";
+        statusIndicator.textContent = "";
+      }
+    });
+
+    function closeModal() {
+      document.getElementById('modalBackdrop').style.display = "none";
+    }
+  </script>
+</body>
+</html>
