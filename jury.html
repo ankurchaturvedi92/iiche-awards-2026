@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IIChE Industry Awards 2026 | Jury Evaluation Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0a2540;
+      --accent: #0070f3;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --success: #10b981;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); }
+    header { background: var(--primary); color: white; padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #00c4cc; }
+    .brand-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700; }
+    .container { max-width: 1050px; margin: 2rem auto; padding: 0 1rem; }
+    
+    /* Login / Accept Cards */
+    .auth-card { background: white; border: 1px solid var(--border); border-radius: 12px; max-width: 440px; margin: 3rem auto; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+    .auth-card h2 { font-size: 1.4rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .auth-card p { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .input-group { margin-bottom: 1.2rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    label { font-size: 0.8rem; font-weight: 600; }
+    input, select, textarea { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; }
+    .btn { background: var(--primary); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 700; width: 100%; cursor: pointer; }
+    .btn:hover { background: #123d68; }
+
+    /* Dashboard */
+    #dashboardView { display: none; }
+    .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .submission-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; }
+    .badge { background: #e0f2fe; color: #0369a1; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; }
+    .file-btn { display: inline-flex; align-items: center; gap: 0.4rem; background: #f1f5f9; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; color: var(--text); font-size: 0.8rem; font-weight: 600; border: 1px solid #cbd5e1; margin-right: 0.5rem; margin-top: 0.5rem; }
+    .eval-box { background: #f8fafc; border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-title">IIChE Industry Awards 2026 | Jury Panel</div>
+    <div id="userBadge" style="font-size:0.85rem; font-weight:600; display:none;"></div>
+  </header>
+
+  <div class="container">
+    <!-- VIEW 1: INVITATION ACCEPTANCE -->
+    <div class="auth-card" id="acceptView" style="display:none; text-align:center;">
+      <h2>Accept Jury Nomination</h2>
+      <p id="acceptMsg">Validating your invitation credentials...</p>
+      <button class="btn" id="confirmAcceptBtn" onclick="confirmAcceptance()">Confirm & Generate Password</button>
+    </div>
+
+    <!-- VIEW 2: LOGIN FORM -->
+    <div class="auth-card" id="loginView">
+      <h2>Jury Sign In</h2>
+      <p>Confidential portal for registered evaluation panel members.</p>
+      <form id="loginForm">
+        <div class="input-group">
+          <label>Email Address</label>
+          <input type="email" id="loginEmail" placeholder="jury@domain.com" required>
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn" id="loginBtn">Access Dashboard</button>
+        <p id="loginError" style="color:#ef4444; font-size:0.8rem; margin-top:0.8rem; display:none;"></p>
+      </form>
+    </div>
+
+    <!-- VIEW 3: JURY REVIEW DASHBOARD -->
+    <div id="dashboardView">
+      <div class="dash-header">
+        <div>
+          <h2 id="welcomeText" style="color:var(--primary);">Submissions Pending Review</h2>
+          <p style="font-size:0.85rem; color:var(--muted);">Inspect applicant dossiers and enter qualitative feedback below.</p>
+        </div>
+        <button onclick="location.reload()" style="background:none; border:1px solid #cbd5e1; padding:0.4rem 0.8rem; border-radius:6px; cursor:pointer;">Sign Out</button>
+      </div>
+
+      <div id="submissionsContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzcBNyJT593YpOLPC03CSJLba8rIj3ycLn8OBc8wO3FhDsdW7SDNdnFf0_TtAYc36Df/exec";
+    const urlParams = new URLSearchParams(window.location.search);
+    const action = urlParams.get('action');
+    const emailParam = urlParams.get('email');
+    const tokenParam = urlParams.get('token');
+
+    let currentJuryEmail = "";
+
+    // 1. Check for Accept Invitation Link
+    if (action === 'accept' && tokenParam) {
+      document.getElementById('loginView').style.display = 'none';
+      document.getElementById('acceptView').style.display = 'block';
+      document.getElementById('acceptMsg').textContent = `Accepting invitation for ${emailParam}. Click below to activate your account and generate your password.`;
+    }
+
+    async function confirmAcceptance() {
+      const btn = document.getElementById('confirmAcceptBtn');
+      btn.disabled = true;
+      btn.textContent = "Generating credentials...";
+
+      const resp = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: "jury_accept", email: emailParam, token: tokenParam })
+      });
+      const data = await resp.json();
+
+      if (data.status === 'success') {
+        alert(data.message);
+        window.location.href = window.location.pathname; // strip query params and open clean login
+      } else {
+        alert("Error: " + data.message);
+        btn.disabled = false;
+      }
+    }
+
+    // 2. Handle Login
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('loginBtn');
+      const err = document.getElementById('loginError');
+      btn.disabled = true;
+      btn.textContent = "Verifying...";
+      err.style.display = 'none';
+
+      currentJuryEmail = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+
+      try {
+        const resp = await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({ action: "jury_login", email: currentJuryEmail, password: password })
+        });
+        const data = await resp.json();
+
+        if (data.status === 'success') {
+          renderDashboard(data);
+        } else {
+          err.textContent = data.message;
+          err.style.display = 'block';
+        }
+      } catch (e) {
+        err.textContent = "Connection error. Please try again.";
+        err.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Access Dashboard";
+      }
+    });
+
+    // 3. Render Dashboard
+    function renderDashboard(data) {
+      document.getElementById('loginView').style.display = 'none';
+      document.getElementById('dashboardView').style.display = 'block';
+      document.getElementById('userBadge').textContent = `Jury: ${data.juryName} (${data.assignedCategory})`;
+      document.getElementById('userBadge').style.display = 'block';
+
+      const container = document.getElementById('submissionsContainer');
+      container.innerHTML = "";
+
+      if (data.submissions.length === 0) {
+        container.innerHTML = "<p style='padding:2rem; text-align:center; color:var(--muted);'>No submissions currently assigned.</p>";
+        return;
+      }
+
+      data.submissions.forEach((sub, i) => {
+        const card = document.createElement('div');
+        card.className = "submission-card";
+        card.innerHTML = `
+          <div class="card-top">
+            <div>
+              <span class="badge">${sub.category}</span>
+              <h3 style="margin-top:0.4rem; color:var(--primary);">${sub.company}</h3>
+              <p style="font-size:0.85rem; color:var(--muted);"><strong>Turnover:</strong> ${sub.turnover} | <strong>Sector:</strong> ${sub.sector}</p>
+            </div>
+            <span style="font-size:0.75rem; font-family:monospace; color:var(--muted);">${sub.id}</span>
+          </div>
+
+          <div style="margin: 0.8rem 0;">
+            <div style="font-weight:700; font-size:0.9rem;">${sub.title}</div>
+            <p style="font-size:0.85rem; color:#334155; margin-top:0.3rem;">${sub.summary}</p>
+            <div style="margin-top:0.5rem; font-size:0.8rem; background:#f1f5f9; padding:0.5rem; border-radius:6px;">
+              <strong>Key Metrics:</strong> ${sub.metrics}
+            </div>
+          </div>
+
+          <div style="margin: 0.8rem 0;">
+            <a href="${sub.dossierUrl}" target="_blank" class="file-btn">📑 View Dossier</a>
+            ${sub.supportingUrl !== 'Not provided' ? `<a href="${sub.supportingUrl}" target="_blank" class="file-btn">📊 View Presentation / Deck</a>` : ''}
+          </div>
+
+          <!-- Evaluation Section -->
+          <div class="eval-box">
+            <h4 style="font-size:0.85rem; margin-bottom:0.5rem;">Jury Evaluation & Remarks</h4>
+            <div style="display:grid; grid-template-columns: 2fr 1fr; gap:0.8rem;">
+              <textarea id="comment_${sub.id}" rows="2" placeholder="Enter confidential remarks and scoring rationale..."></textarea>
+              <div style="display:flex; flex-direction:column; gap:0.4rem;">
+                <select id="status_${sub.id}">
+                  <option value="Shortlisted">Recommend: Shortlisted</option>
+                  <option value="Under Review">Hold: Under Review</option>
+                  <option value="Disqualified">Not Recommended</option>
+                </select>
+                <button class="btn" onclick="saveEvaluation('${sub.id}', '${sub.company}')" style="padding:0.5rem;">Save Evaluation</button>
+              </div>
+            </div>
+            <span id="savedMsg_${sub.id}" style="font-size:0.75rem; color:var(--success); font-weight:700; display:none; margin-top:0.3rem;">✓ Evaluation logged to sheet</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // 4. Save Evaluation
+    async function saveEvaluation(subId, company) {
+      const comments = document.getElementById(`comment_${subId}`).value;
+      const evalStatus = document.getElementById(`status_${subId}`).value;
+      const msg = document.getElementById(`savedMsg_${subId}`);
+
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({
+          action: "jury_evaluate",
+          juryEmail: currentJuryEmail,
+          submissionId: subId,
+          companyName: company,
+          comments: comments,
+          evalStatus: evalStatus
+        })
+      });
+
+      msg.style.display = "block";
+      setTimeout(() => { msg.style.display = "none"; }, 3000);
+    }
+  </script>
+</body>
+</html>
