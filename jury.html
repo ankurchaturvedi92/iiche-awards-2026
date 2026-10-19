@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IIChE Industry Awards 2026 | Jury Evaluation Dashboard</title>
+  <title>IIChE Industry Awards 2026 | Jury Panel Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
@@ -17,78 +17,138 @@
       --text: #0f172a;
       --muted: #64748b;
       --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --radius: 12px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); }
-    header { background: var(--primary); color: white; padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #00c4cc; }
-    .brand-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700; }
-    .container { max-width: 1050px; margin: 2rem auto; padding: 0 1rem; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
     
-    /* Login / Accept Cards */
-    .auth-card { background: white; border: 1px solid var(--border); border-radius: 12px; max-width: 440px; margin: 3rem auto; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
-    .auth-card h2 { font-size: 1.4rem; color: var(--primary); margin-bottom: 0.5rem; }
-    .auth-card p { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
-    .input-group { margin-bottom: 1.2rem; display: flex; flex-direction: column; gap: 0.4rem; }
-    label { font-size: 0.8rem; font-weight: 600; }
-    input, select, textarea { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; }
-    .btn { background: var(--primary); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 700; width: 100%; cursor: pointer; }
-    .btn:hover { background: #123d68; }
+    header { background: var(--primary); color: white; padding: 1.2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #00c4cc; }
+    .brand-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 700; }
+    .container { max-width: 1050px; margin: 2.5rem auto; padding: 0 1rem; }
 
-    /* Dashboard */
+    /* Modal / Auth Cards */
+    .card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+    .auth-box { max-width: 460px; margin: 2rem auto; }
+    .auth-box h2 { font-size: 1.4rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .auth-box p { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
+    
+    .input-group { margin-bottom: 1.2rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    label { font-size: 0.85rem; font-weight: 600; }
+    input, select, textarea { width: 100%; padding: 0.75rem 0.9rem; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,112,243,0.12); }
+    
+    .btn { background: var(--primary); color: white; border: none; padding: 0.85rem 1.5rem; border-radius: 8px; font-weight: 700; width: 100%; cursor: pointer; transition: background 0.2s; }
+    .btn:hover:not(:disabled) { background: #123d68; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Password Strength Meter */
+    .meter-container { height: 6px; width: 100%; background: #e2e8f0; border-radius: 3px; margin: 0.5rem 0 0.8rem; overflow: hidden; }
+    .meter-bar { height: 100%; width: 0%; transition: all 0.3s ease; }
+    .strength-text { font-size: 0.75rem; font-weight: 700; text-align: right; margin-bottom: 0.6rem; }
+    
+    .conditions-list { list-style: none; margin: 0.5rem 0 1rem; font-size: 0.78rem; display: flex; flex-direction: column; gap: 0.3rem; }
+    .conditions-list li { display: flex; align-items: center; gap: 0.5rem; color: var(--muted); }
+    .conditions-list li.valid { color: var(--success); font-weight: 600; }
+    .conditions-list li.valid::before { content: "✔"; }
+    .conditions-list li.invalid::before { content: "✖"; color: var(--danger); }
+
+    /* Dashboard Layout */
     #dashboardView { display: none; }
-    .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-    .submission-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; }
-    .badge { background: #e0f2fe; color: #0369a1; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; }
-    .file-btn { display: inline-flex; align-items: center; gap: 0.4rem; background: #f1f5f9; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; color: var(--text); font-size: 0.8rem; font-weight: 600; border: 1px solid #cbd5e1; margin-right: 0.5rem; margin-top: 0.5rem; }
-    .eval-box { background: #f8fafc; border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem; }
+    .dash-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .submission-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    
+    .seq-badge { background: #0a2540; color: white; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 800; }
+    .cat-badge { background: #e0f2fe; color: #0369a1; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; }
+    
+    .file-btn { display: inline-flex; align-items: center; gap: 0.4rem; background: #f1f5f9; padding: 0.45rem 0.85rem; border-radius: 6px; text-decoration: none; color: var(--text); font-size: 0.8rem; font-weight: 600; border: 1px solid #cbd5e1; margin-right: 0.5rem; margin-top: 0.5rem; }
+    .eval-section { background: #f8fafc; border-top: 1px solid var(--border); padding-top: 1.2rem; margin-top: 1.2rem; }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="brand-title">IIChE Industry Awards 2026 | Jury Panel</div>
+    <div class="brand-title">IIChE Industry Awards 2026 | Jury Portal</div>
     <div id="userBadge" style="font-size:0.85rem; font-weight:600; display:none;"></div>
   </header>
 
   <div class="container">
-    <!-- VIEW 1: INVITATION ACCEPTANCE -->
-    <div class="auth-card" id="acceptView" style="display:none; text-align:center;">
+
+    <!-- 1. INVITATION ACCEPTANCE VIEW -->
+    <div class="card auth-box" id="acceptView" style="display:none; text-align:center;">
       <h2>Accept Jury Nomination</h2>
-      <p id="acceptMsg">Validating your invitation credentials...</p>
+      <p id="acceptMsg">Validating your panel invitation credentials...</p>
       <button class="btn" id="confirmAcceptBtn" onclick="confirmAcceptance()">Confirm & Generate Password</button>
     </div>
 
-    <!-- VIEW 2: LOGIN FORM -->
-    <div class="auth-card" id="loginView">
+    <!-- 2. LOGIN VIEW -->
+    <div class="card auth-box" id="loginView">
       <h2>Jury Sign In</h2>
-      <p>Confidential portal for registered evaluation panel members.</p>
+      <p>Log in using your registered email and password.</p>
       <form id="loginForm">
         <div class="input-group">
           <label>Email Address</label>
-          <input type="email" id="loginEmail" placeholder="jury@domain.com" required>
+          <input type="email" id="loginEmail" placeholder="jury@organization.com" required>
         </div>
         <div class="input-group">
           <label>Password</label>
           <input type="password" id="loginPassword" placeholder="••••••••" required>
         </div>
         <button type="submit" class="btn" id="loginBtn">Access Dashboard</button>
-        <p id="loginError" style="color:#ef4444; font-size:0.8rem; margin-top:0.8rem; display:none;"></p>
+        <p id="loginError" style="color:var(--danger); font-size:0.8rem; margin-top:0.8rem; display:none;"></p>
       </form>
     </div>
 
-    <!-- VIEW 3: JURY REVIEW DASHBOARD -->
+    <!-- 3. MANDATORY FIRST-LOGIN PASSWORD RESET VIEW -->
+    <div class="card auth-box" id="resetPasswordView" style="display:none;">
+      <h2>Set Permanent Password</h2>
+      <p>As a security measure on your first login, please establish a secure permanent password.</p>
+      
+      <form id="passwordResetForm">
+        <div class="input-group">
+          <label>New Permanent Password</label>
+          <input type="password" id="newPass" placeholder="Enter new password" required>
+        </div>
+
+        <!-- Strength Meter -->
+        <div class="meter-container">
+          <div class="meter-bar" id="meterBar"></div>
+        </div>
+        <div class="strength-text" id="strengthText" style="color:var(--muted);">Strength: None</div>
+
+        <!-- Live Conditions -->
+        <ul class="conditions-list">
+          <li id="c_len" class="invalid">At least 8 characters</li>
+          <li id="c_up" class="invalid">At least 1 uppercase letter (A-Z)</li>
+          <li id="c_low" class="invalid">At least 1 lowercase letter (a-z)</li>
+          <li id="c_num" class="invalid">At least 1 numerical digit (0-9)</li>
+          <li id="c_spec" class="invalid">At least 1 special character (!@#$%^&*)</li>
+        </ul>
+
+        <div class="input-group">
+          <label>Confirm Password</label>
+          <input type="password" id="confirmPass" placeholder="Re-enter password" required>
+        </div>
+        <p id="matchError" style="color:var(--danger); font-size:0.78rem; display:none; margin-bottom:0.6rem;">Passwords do not match.</p>
+
+        <button type="submit" class="btn" id="submitNewPassBtn" disabled>Set Password & Proceed</button>
+      </form>
+    </div>
+
+    <!-- 4. DASHBOARD VIEW -->
     <div id="dashboardView">
-      <div class="dash-header">
+      <div class="dash-top">
         <div>
-          <h2 id="welcomeText" style="color:var(--primary);">Submissions Pending Review</h2>
-          <p style="font-size:0.85rem; color:var(--muted);">Inspect applicant dossiers and enter qualitative feedback below.</p>
+          <h2 style="color:var(--primary);">Submissions Pending Evaluation</h2>
+          <p style="font-size:0.85rem; color:var(--muted);">Review dossiers sequentially and register confidential assessment notes.</p>
         </div>
         <button onclick="location.reload()" style="background:none; border:1px solid #cbd5e1; padding:0.4rem 0.8rem; border-radius:6px; cursor:pointer;">Sign Out</button>
       </div>
 
       <div id="submissionsContainer"></div>
     </div>
+
   </div>
 
   <script>
@@ -99,18 +159,19 @@
     const tokenParam = urlParams.get('token');
 
     let currentJuryEmail = "";
+    let temporaryPasswordHolder = "";
 
-    // 1. Check for Accept Invitation Link
+    // A. Handle Invite Acceptance Link
     if (action === 'accept' && tokenParam) {
       document.getElementById('loginView').style.display = 'none';
       document.getElementById('acceptView').style.display = 'block';
-      document.getElementById('acceptMsg').textContent = `Accepting invitation for ${emailParam}. Click below to activate your account and generate your password.`;
+      document.getElementById('acceptMsg').textContent = `Accepting invitation for ${emailParam}. Click below to confirm and generate your temporary access key.`;
     }
 
     async function confirmAcceptance() {
       const btn = document.getElementById('confirmAcceptBtn');
       btn.disabled = true;
-      btn.textContent = "Generating credentials...";
+      btn.textContent = "Processing...";
 
       const resp = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
@@ -121,14 +182,14 @@
 
       if (data.status === 'success') {
         alert(data.message);
-        window.location.href = window.location.pathname; // strip query params and open clean login
+        window.location.href = window.location.pathname;
       } else {
         alert("Error: " + data.message);
         btn.disabled = false;
       }
     }
 
-    // 2. Handle Login
+    // B. Handle Login
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('loginBtn');
@@ -138,17 +199,21 @@
       err.style.display = 'none';
 
       currentJuryEmail = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value.trim();
+      temporaryPasswordHolder = document.getElementById('loginPassword').value.trim();
 
       try {
         const resp = await fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ action: "jury_login", email: currentJuryEmail, password: password })
+          body: JSON.stringify({ action: "jury_login", email: currentJuryEmail, password: temporaryPasswordHolder })
         });
         const data = await resp.json();
 
-        if (data.status === 'success') {
+        if (data.status === 'must_change_password') {
+          // Mandatory 1st login redirect
+          document.getElementById('loginView').style.display = 'none';
+          document.getElementById('resetPasswordView').style.display = 'block';
+        } else if (data.status === 'success') {
           renderDashboard(data);
         } else {
           err.textContent = data.message;
@@ -163,9 +228,106 @@
       }
     });
 
-    // 3. Render Dashboard
+    // C. Live Password Strength & Condition Checking
+    const newPassInput = document.getElementById('newPass');
+    const confirmPassInput = document.getElementById('confirmPass');
+    const submitNewPassBtn = document.getElementById('submitNewPassBtn');
+    const meterBar = document.getElementById('meterBar');
+    const strengthText = document.getElementById('strengthText');
+    const matchError = document.getElementById('matchError');
+
+    const rules = {
+      len: val => val.length >= 8,
+      up: val => /[A-Z]/.test(val),
+      low: val => /[a-z]/.test(val),
+      num: val => /[0-9]/.test(val),
+      spec: val => /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(val)
+    };
+
+    function validatePasswordStrength() {
+      const val = newPassInput.value;
+      let score = 0;
+
+      // Update condition checklist
+      updateCondition('c_len', rules.len(val)); if (rules.len(val)) score++;
+      updateCondition('c_up', rules.up(val)); if (rules.up(val)) score++;
+      updateCondition('c_low', rules.low(val)); if (rules.low(val)) score++;
+      updateCondition('c_num', rules.num(val)); if (rules.num(val)) score++;
+      updateCondition('c_spec', rules.spec(val)); if (rules.spec(val)) score++;
+
+      // Update Meter Bar
+      if (score <= 2) {
+        meterBar.style.width = "30%";
+        meterBar.style.background = "var(--danger)";
+        strengthText.textContent = "Strength: Weak";
+        strengthText.style.color = "var(--danger)";
+      } else if (score === 3 || score === 4) {
+        meterBar.style.width = "65%";
+        meterBar.style.background = "var(--warning)";
+        strengthText.textContent = "Strength: Medium";
+        strengthText.style.color = "var(--warning)";
+      } else if (score === 5) {
+        meterBar.style.width = "100%";
+        meterBar.style.background = "var(--success)";
+        strengthText.textContent = "Strength: Strong";
+        strengthText.style.color = "var(--success)";
+      }
+
+      // Check match & enablement
+      const matches = val === confirmPassInput.value && val !== "";
+      if (confirmPassInput.value !== "" && !matches) {
+        matchError.style.display = "block";
+      } else {
+        matchError.style.display = "none";
+      }
+
+      submitNewPassBtn.disabled = !(score === 5 && matches);
+    }
+
+    function updateCondition(id, isValid) {
+      const el = document.getElementById(id);
+      if (isValid) {
+        el.className = "valid";
+      } else {
+        el.className = "invalid";
+      }
+    }
+
+    newPassInput.addEventListener('input', validatePasswordStrength);
+    confirmPassInput.addEventListener('input', validatePasswordStrength);
+
+    // D. Submit Permanent Password
+    document.getElementById('passwordResetForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitNewPassBtn.disabled = true;
+      submitNewPassBtn.textContent = "Updating password...";
+
+      const resp = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({
+          action: "jury_change_password",
+          email: currentJuryEmail,
+          oldPassword: temporaryPasswordHolder,
+          newPassword: newPassInput.value
+        })
+      });
+      const data = await resp.json();
+
+      if (data.status === 'success') {
+        alert("Password successfully established. Please log in with your new permanent password.");
+        window.location.reload();
+      } else {
+        alert("Error: " + data.message);
+        submitNewPassBtn.disabled = false;
+        submitNewPassBtn.textContent = "Set Password & Proceed";
+      }
+    });
+
+    // E. Render Dashboard with Sequential Numbering
     function renderDashboard(data) {
       document.getElementById('loginView').style.display = 'none';
+      document.getElementById('resetPasswordView').style.display = 'none';
       document.getElementById('dashboardView').style.display = 'block';
       document.getElementById('userBadge').textContent = `Jury: ${data.juryName} (${data.assignedCategory})`;
       document.getElementById('userBadge').style.display = 'block';
@@ -178,37 +340,41 @@
         return;
       }
 
-      data.submissions.forEach((sub, i) => {
+      data.submissions.forEach((sub) => {
         const card = document.createElement('div');
         card.className = "submission-card";
         card.innerHTML = `
-          <div class="card-top">
-            <div>
-              <span class="badge">${sub.category}</span>
-              <h3 style="margin-top:0.4rem; color:var(--primary);">${sub.company}</h3>
-              <p style="font-size:0.85rem; color:var(--muted);"><strong>Turnover:</strong> ${sub.turnover} | <strong>Sector:</strong> ${sub.sector}</p>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.8rem;">
+            <div style="display:flex; align-items:center; gap:0.6rem;">
+              <span class="seq-badge">Submission #${sub.seqNumber}</span>
+              <span class="cat-badge">${sub.category}</span>
             </div>
             <span style="font-size:0.75rem; font-family:monospace; color:var(--muted);">${sub.id}</span>
           </div>
 
-          <div style="margin: 0.8rem 0;">
-            <div style="font-weight:700; font-size:0.9rem;">${sub.title}</div>
-            <p style="font-size:0.85rem; color:#334155; margin-top:0.3rem;">${sub.summary}</p>
-            <div style="margin-top:0.5rem; font-size:0.8rem; background:#f1f5f9; padding:0.5rem; border-radius:6px;">
-              <strong>Key Metrics:</strong> ${sub.metrics}
+          <h3 style="color:var(--primary); margin-bottom:0.3rem;">${sub.company}</h3>
+          <p style="font-size:0.85rem; color:var(--muted); margin-bottom:0.8rem;">
+            <strong>Turnover:</strong> ${sub.turnover} | <strong>Domain:</strong> ${sub.sector}
+          </p>
+
+          <div style="margin-bottom:0.8rem;">
+            <div style="font-weight:700; font-size:0.95rem;">${sub.title}</div>
+            <p style="font-size:0.88rem; color:#334155; margin-top:0.4rem; line-height:1.6;">${sub.summary}</p>
+            <div style="margin-top:0.6rem; font-size:0.82rem; background:#f1f5f9; padding:0.6rem 0.8rem; border-radius:6px;">
+              <strong>Key Metrics & ROI:</strong> ${sub.metrics}
             </div>
           </div>
 
           <div style="margin: 0.8rem 0;">
-            <a href="${sub.dossierUrl}" target="_blank" class="file-btn">📑 View Dossier</a>
-            ${sub.supportingUrl !== 'Not provided' ? `<a href="${sub.supportingUrl}" target="_blank" class="file-btn">📊 View Presentation / Deck</a>` : ''}
+            <a href="${sub.dossierUrl}" target="_blank" class="file-btn">📑 View Complete Dossier</a>
+            ${sub.supportingUrl !== 'Not provided' ? `<a href="${sub.supportingUrl}" target="_blank" class="file-btn">📊 View Pitch / Supporting Deck</a>` : ''}
           </div>
 
-          <!-- Evaluation Section -->
-          <div class="eval-box">
-            <h4 style="font-size:0.85rem; margin-bottom:0.5rem;">Jury Evaluation & Remarks</h4>
+          <!-- Evaluation Module -->
+          <div class="eval-section">
+            <h4 style="font-size:0.85rem; margin-bottom:0.5rem; color:var(--primary);">Evaluation Notes & Status</h4>
             <div style="display:grid; grid-template-columns: 2fr 1fr; gap:0.8rem;">
-              <textarea id="comment_${sub.id}" rows="2" placeholder="Enter confidential remarks and scoring rationale..."></textarea>
+              <textarea id="comment_${sub.id}" rows="2" placeholder="Record qualitative comments, scoring rationale, and feedback..."></textarea>
               <div style="display:flex; flex-direction:column; gap:0.4rem;">
                 <select id="status_${sub.id}">
                   <option value="Shortlisted">Recommend: Shortlisted</option>
@@ -218,14 +384,14 @@
                 <button class="btn" onclick="saveEvaluation('${sub.id}', '${sub.company}')" style="padding:0.5rem;">Save Evaluation</button>
               </div>
             </div>
-            <span id="savedMsg_${sub.id}" style="font-size:0.75rem; color:var(--success); font-weight:700; display:none; margin-top:0.3rem;">✓ Evaluation logged to sheet</span>
+            <span id="savedMsg_${sub.id}" style="font-size:0.75rem; color:var(--success); font-weight:700; display:none; margin-top:0.3rem;">✔ Evaluation registered in database</span>
           </div>
         `;
         container.appendChild(card);
       });
     }
 
-    // 4. Save Evaluation
+    // F. Evaluation Logging
     async function saveEvaluation(subId, company) {
       const comments = document.getElementById(`comment_${subId}`).value;
       const evalStatus = document.getElementById(`status_${subId}`).value;
@@ -245,7 +411,7 @@
       });
 
       msg.style.display = "block";
-      setTimeout(() => { msg.style.display = "none"; }, 3000);
+      setTimeout(() => { msg.style.display = "none"; }, 3500);
     }
   </script>
 </body>
