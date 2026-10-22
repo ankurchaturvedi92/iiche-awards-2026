@@ -5,137 +5,366 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IIChE Awards 2026 | Technical Screening Committee</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --primary: #0a2540; --accent: #0284c7; --bg: #f8fafc; --border: #e2e8f0; --success: #10b981; }
+    :root {
+      --primary: #0a2540;
+      --accent: #0284c7;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --radius: 12px;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #0f172a; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+    
     header { background: var(--primary); color: white; padding: 1.2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #f59e0b; }
-    .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
-    .card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
-    .auth-box { max-width: 440px; margin: 3rem auto; }
-    .btn { background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; font-weight: 700; cursor: pointer; }
-    .sub-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; }
-    .pill { padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
+    .brand-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 700; }
+    .container { max-width: 1100px; margin: 2.5rem auto; padding: 0 1rem; }
+
+    /* Auth Cards */
+    .card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+    .auth-box { max-width: 460px; margin: 2rem auto; }
+    .auth-box h2 { font-size: 1.4rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .auth-box p { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
+    
+    .input-group { margin-bottom: 1.2rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    label { font-size: 0.85rem; font-weight: 600; }
+    input, select, textarea { width: 100%; padding: 0.75rem 0.9rem; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(2,132,199,0.12); }
+    
+    .btn { background: var(--primary); color: white; border: none; padding: 0.85rem 1.5rem; border-radius: 8px; font-weight: 700; width: 100%; cursor: pointer; transition: background 0.2s; }
+    .btn:hover:not(:disabled) { background: #123d68; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Password Strength Meter */
+    .meter-container { height: 6px; width: 100%; background: #e2e8f0; border-radius: 3px; margin: 0.5rem 0 0.8rem; overflow: hidden; }
+    .meter-bar { height: 100%; width: 0%; transition: all 0.3s ease; }
+    .strength-text { font-size: 0.75rem; font-weight: 700; text-align: right; margin-bottom: 0.6rem; }
+    
+    .conditions-list { list-style: none; margin: 0.5rem 0 1rem; font-size: 0.78rem; display: flex; flex-direction: column; gap: 0.3rem; }
+    .conditions-list li { display: flex; align-items: center; gap: 0.5rem; color: var(--muted); }
+    .conditions-list li.valid { color: var(--success); font-weight: 600; }
+    .conditions-list li.valid::before { content: "✔"; }
+    .conditions-list li.invalid::before { content: "✖"; color: var(--danger); }
+
+    /* Dashboard */
+    #techDashView { display: none; }
+    .sub-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .pill { padding: 0.25rem 0.65rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
     .pill-pending { background: #fef3c7; color: #b45309; }
     .pill-forwarded { background: #dcfce7; color: #15803d; }
     .pill-rejected { background: #fee2e2; color: #b91c1c; }
+    .file-btn { display: inline-flex; align-items: center; gap: 0.4rem; background: #f1f5f9; padding: 0.45rem 0.85rem; border-radius: 6px; text-decoration: none; color: var(--text); font-size: 0.8rem; font-weight: 600; border: 1px solid #cbd5e1; margin-right: 0.5rem; margin-top: 0.5rem; }
   </style>
 </head>
 <body>
 
   <header>
-    <div style="font-family:'Space Grotesk',sans-serif; font-size:1.2rem; font-weight:700;">IIChE-MRC Technical Screening Committee</div>
+    <div class="brand-title">IIChE-MRC Technical Screening Committee</div>
     <div id="techUserBadge" style="font-size:0.85rem; font-weight:600; display:none;"></div>
   </header>
 
   <div class="container">
-    <!-- LOGIN VIEW -->
+
+    <!-- 1. INVITATION ACCEPTANCE VIEW -->
+    <div class="card auth-box" id="acceptView" style="display:none; text-align:center;">
+      <h2>Accept Committee Nomination</h2>
+      <p id="acceptMsg">Validating your Technical Screening Panel invitation credentials...</p>
+      <button class="btn" id="confirmAcceptBtn" onclick="confirmAcceptance()">Confirm & Generate Password</button>
+    </div>
+
+    <!-- 2. LOGIN VIEW -->
     <div class="card auth-box" id="techLoginView">
-      <h2 style="font-size:1.3rem; color:var(--primary); margin-bottom:0.4rem;">Committee Sign In</h2>
-      <p style="font-size:0.85rem; color:#64748b; margin-bottom:1.2rem;">Pre-screening and eligibility verification portal.</p>
+      <h2>Committee Sign In</h2>
+      <p>Log in using your registered email and password.</p>
       <form id="techLoginForm">
-        <div style="margin-bottom:1rem;">
-          <label style="font-size:0.85rem; font-weight:600;">Email</label>
-          <input type="email" id="tEmail" required style="width:100%; padding:0.7rem; border:1px solid var(--border); border-radius:6px; margin-top:0.3rem;">
+        <div class="input-group">
+          <label>Email Address</label>
+          <input type="email" id="tEmail" placeholder="member@organization.com" required>
         </div>
-        <div style="margin-bottom:1rem;">
-          <label style="font-size:0.85rem; font-weight:600;">Password</label>
-          <input type="password" id="tPass" required style="width:100%; padding:0.7rem; border:1px solid var(--border); border-radius:6px; margin-top:0.3rem;">
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="tPass" placeholder="••••••••" required>
         </div>
-        <button type="submit" class="btn" style="width:100%;">Sign In</button>
+        <button type="submit" class="btn" id="loginBtn">Access Screening Queue</button>
+        <p id="loginError" style="color:var(--danger); font-size:0.8rem; margin-top:0.8rem; display:none;"></p>
       </form>
     </div>
 
-    <!-- SCREENING DASHBOARD -->
-    <div id="techDashView" style="display:none;">
+    <!-- 3. MANDATORY FIRST-LOGIN PASSWORD RESET VIEW -->
+    <div class="card auth-box" id="resetPasswordView" style="display:none;">
+      <h2>Set Permanent Password</h2>
+      <p>As a security measure on your first login, please establish your confidential permanent password.</p>
+      
+      <form id="passwordResetForm">
+        <div class="input-group">
+          <label>New Permanent Password</label>
+          <input type="password" id="newPass" placeholder="Enter new password" required>
+        </div>
+
+        <div class="meter-container">
+          <div class="meter-bar" id="meterBar"></div>
+        </div>
+        <div class="strength-text" id="strengthText" style="color:var(--muted);">Strength: None</div>
+
+        <ul class="conditions-list">
+          <li id="c_len" class="invalid">At least 8 characters</li>
+          <li id="c_up" class="invalid">At least 1 uppercase letter (A-Z)</li>
+          <li id="c_low" class="invalid">At least 1 lowercase letter (a-z)</li>
+          <li id="c_num" class="invalid">At least 1 numerical digit (0-9)</li>
+          <li id="c_spec" class="invalid">At least 1 special character (!@#$%^&*)</li>
+        </ul>
+
+        <div class="input-group">
+          <label>Confirm Password</label>
+          <input type="password" id="confirmPass" placeholder="Re-enter password" required>
+        </div>
+        <p id="matchError" style="color:var(--danger); font-size:0.78rem; display:none; margin-bottom:0.6rem;">Passwords do not match.</p>
+
+        <button type="submit" class="btn" id="submitNewPassBtn" disabled>Set Password & Proceed</button>
+      </form>
+    </div>
+
+    <!-- 4. DASHBOARD VIEW -->
+    <div id="techDashView">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
         <div>
           <h2 style="color:var(--primary);">Submissions Assigned for Screening</h2>
-          <p style="font-size:0.85rem; color:#64748b;">Review compliance before forwarding entries to the National Jury.</p>
+          <p style="font-size:0.85rem; color:var(--muted);">Review technical dossiers before forwarding approved entries to the National Jury.</p>
         </div>
         <button onclick="location.reload()" style="background:none; border:1px solid #cbd5e1; padding:0.4rem 0.8rem; border-radius:6px; cursor:pointer;">Sign Out</button>
       </div>
 
       <div id="techListContainer"></div>
     </div>
+
   </div>
 
   <script>
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzcBNyJT593YpOLPC03CSJLba8rIj3ycLn8OBc8wO3FhDsdW7SDNdnFf0_TtAYc36Df/exec";
+    const urlParams = new URLSearchParams(window.location.search);
+    const action = urlParams.get('action');
+    const emailParam = urlParams.get('email');
+    const tokenParam = urlParams.get('token');
 
-    document.getElementById('techLoginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('tEmail').value.trim();
-      const pass = document.getElementById('tPass').value.trim();
+    let currentMemberEmail = "";
+    let temporaryPasswordHolder = "";
+
+    // 1. Check for Accept Link
+    if (action === 'accept' && tokenParam) {
+      document.getElementById('techLoginView').style.display = 'none';
+      document.getElementById('acceptView').style.display = 'block';
+      document.getElementById('acceptMsg').textContent = `Accepting Technical Screening Committee nomination for ${emailParam}. Click below to confirm and generate your temporary password.`;
+    }
+
+    async function confirmAcceptance() {
+      const btn = document.getElementById('confirmAcceptBtn');
+      btn.disabled = true;
+      btn.textContent = "Processing...";
 
       const resp = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ action: "tech_login", email: email, password: pass })
+        body: JSON.stringify({ action: "tech_accept", email: emailParam, token: tokenParam })
       });
       const data = await resp.json();
 
       if (data.status === 'success') {
-        document.getElementById('techLoginView').style.display = 'none';
-        document.getElementById('techDashView').style.display = 'block';
-        document.getElementById('techUserBadge').textContent = `Reviewer: ${data.name} (Scope: ${data.assignedScope})`;
-        document.getElementById('techUserBadge').style.display = 'block';
-
-        const cont = document.getElementById('techListContainer');
-        cont.innerHTML = "";
-
-        if (!data.submissions || data.submissions.length === 0) {
-          cont.innerHTML = "<p style='padding:2rem; text-align:center; color:#64748b;'>No submissions currently assigned to your scope.</p>";
-          return;
-        }
-
-        data.submissions.forEach((sub) => {
-          let pillClass = "pill-pending";
-          if (sub.techStatus === "Forwarded to Jury") pillClass = "pill-forwarded";
-          if (sub.techStatus === "Rejected") pillClass = "pill-rejected";
-
-          const card = document.createElement('div');
-          card.className = "sub-card";
-          card.innerHTML = `
-            <div style="display:flex; justify-content:space-between; margin-bottom:0.6rem;">
-              <div>
-                <span class="pill ${pillClass}">${sub.techStatus}</span>
-                <span style="font-weight:700; margin-left:0.5rem; font-family:monospace;">${sub.id}</span>
-                <h3 style="margin-top:0.3rem; color:var(--primary);">${sub.company}</h3>
-                <p style="font-size:0.85rem; color:#64748b;"><strong>Turnover:</strong> ${sub.turnover} | <strong>Category:</strong> ${sub.category}</p>
-              </div>
-            </div>
-
-            <p style="font-size:0.9rem; margin:0.6rem 0;"><strong>${sub.title}</strong><br>${sub.summary}</p>
-            <div style="background:#f1f5f9; padding:0.5rem; border-radius:6px; font-size:0.82rem; margin-bottom:0.8rem;">
-              <strong>Metrics:</strong> ${sub.metrics}
-            </div>
-
-            <div style="margin-bottom:1rem;">
-              <a href="${sub.dossierUrl}" target="_blank" style="margin-right:1rem; font-size:0.85rem; font-weight:600;">📑 View Dossier</a>
-              ${sub.supportingUrl !== 'Not provided' ? `<a href="${sub.supportingUrl}" target="_blank" style="font-size:0.85rem; font-weight:600;">📊 View Supporting Deck</a>` : ''}
-            </div>
-
-            <!-- Committee Actions -->
-            <div style="border-top:1px solid #e2e8f0; padding-top:0.8rem; display:grid; grid-template-columns: 2fr 1fr; gap:0.8rem;">
-              <textarea id="tComment_${sub.id}" rows="2" placeholder="Committee screening remarks...">${sub.techComments}</textarea>
-              <div style="display:flex; flex-direction:column; gap:0.4rem;">
-                <select id="tStatus_${sub.id}">
-                  <option value="Pending Screening" ${sub.techStatus === 'Pending Screening' ? 'selected' : ''}>Status: Pending</option>
-                  <option value="Forwarded to Jury" ${sub.techStatus === 'Forwarded to Jury' ? 'selected' : ''}>Forward to Final Jury</option>
-                  <option value="Rejected" ${sub.techStatus === 'Rejected' ? 'selected' : ''}>Reject / Non-compliant</option>
-                </select>
-                <button class="btn" onclick="saveScreening('${sub.id}')" style="padding:0.4rem;">Save Decision</button>
-              </div>
-            </div>
-          `;
-          cont.appendChild(card);
-        });
+        alert(data.message);
+        window.location.href = window.location.pathname;
       } else {
-        alert("Login failed: " + data.message);
+        alert("Error: " + data.message);
+        btn.disabled = false;
+      }
+    }
+
+    // 2. Handle Login
+    document.getElementById('techLoginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('loginBtn');
+      const err = document.getElementById('loginError');
+      btn.disabled = true;
+      btn.textContent = "Verifying...";
+      err.style.display = 'none';
+
+      currentMemberEmail = document.getElementById('tEmail').value.trim();
+      temporaryPasswordHolder = document.getElementById('tPass').value.trim();
+
+      try {
+        const resp = await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({ action: "tech_login", email: currentMemberEmail, password: temporaryPasswordHolder })
+        });
+        const data = await resp.json();
+
+        if (data.status === 'must_change_password') {
+          document.getElementById('techLoginView').style.display = 'none';
+          document.getElementById('resetPasswordView').style.display = 'block';
+        } else if (data.status === 'success') {
+          renderDashboard(data);
+        } else {
+          err.textContent = data.message;
+          err.style.display = 'block';
+        }
+      } catch (e) {
+        err.textContent = "Connection error. Please try again.";
+        err.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Access Screening Queue";
       }
     });
+
+    // 3. Password Strength Logic
+    const newPassInput = document.getElementById('newPass');
+    const confirmPassInput = document.getElementById('confirmPass');
+    const submitNewPassBtn = document.getElementById('submitNewPassBtn');
+    const meterBar = document.getElementById('meterBar');
+    const strengthText = document.getElementById('strengthText');
+    const matchError = document.getElementById('matchError');
+
+    const rules = {
+      len: val => val.length >= 8,
+      up: val => /[A-Z]/.test(val),
+      low: val => /[a-z]/.test(val),
+      num: val => /[0-9]/.test(val),
+      spec: val => /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(val)
+    };
+
+    function validatePasswordStrength() {
+      const val = newPassInput.value;
+      let score = 0;
+
+      updateCondition('c_len', rules.len(val)); if (rules.len(val)) score++;
+      updateCondition('c_up', rules.up(val)); if (rules.up(val)) score++;
+      updateCondition('c_low', rules.low(val)); if (rules.low(val)) score++;
+      updateCondition('c_num', rules.num(val)); if (rules.num(val)) score++;
+      updateCondition('c_spec', rules.spec(val)); if (rules.spec(val)) score++;
+
+      if (score <= 2) {
+        meterBar.style.width = "30%";
+        meterBar.style.background = "var(--danger)";
+        strengthText.textContent = "Strength: Weak";
+        strengthText.style.color = "var(--danger)";
+      } else if (score === 3 || score === 4) {
+        meterBar.style.width = "65%";
+        meterBar.style.background = "var(--warning)";
+        strengthText.textContent = "Strength: Medium";
+        strengthText.style.color = "var(--warning)";
+      } else if (score === 5) {
+        meterBar.style.width = "100%";
+        meterBar.style.background = "var(--success)";
+        strengthText.textContent = "Strength: Strong";
+        strengthText.style.color = "var(--success)";
+      }
+
+      const matches = val === confirmPassInput.value && val !== "";
+      matchError.style.display = (confirmPassInput.value !== "" && !matches) ? "block" : "none";
+      submitNewPassBtn.disabled = !(score === 5 && matches);
+    }
+
+    function updateCondition(id, isValid) {
+      document.getElementById(id).className = isValid ? "valid" : "invalid";
+    }
+
+    newPassInput.addEventListener('input', validatePasswordStrength);
+    confirmPassInput.addEventListener('input', validatePasswordStrength);
+
+    // 4. Submit Permanent Password
+    document.getElementById('passwordResetForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitNewPassBtn.disabled = true;
+      submitNewPassBtn.textContent = "Updating password...";
+
+      const resp = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({
+          action: "change_password",
+          portalType: "tech",
+          email: currentMemberEmail,
+          oldPassword: temporaryPasswordHolder,
+          newPassword: newPassInput.value
+        })
+      });
+      const data = await resp.json();
+
+      if (data.status === 'success') {
+        alert("Permanent password set! Please log in.");
+        window.location.reload();
+      } else {
+        alert("Error: " + data.message);
+        submitNewPassBtn.disabled = false;
+        submitNewPassBtn.textContent = "Set Password & Proceed";
+      }
+    });
+
+    // 5. Render Screening Queue
+    function renderDashboard(data) {
+      document.getElementById('techLoginView').style.display = 'none';
+      document.getElementById('resetPasswordView').style.display = 'none';
+      document.getElementById('techDashView').style.display = 'block';
+      document.getElementById('techUserBadge').textContent = `Reviewer: ${data.name} (Scope: ${data.assignedScope})`;
+      document.getElementById('techUserBadge').style.display = 'block';
+
+      const cont = document.getElementById('techListContainer');
+      cont.innerHTML = "";
+
+      if (!data.submissions || data.submissions.length === 0) {
+        cont.innerHTML = "<p style='padding:2rem; text-align:center; color:var(--muted);'>No submissions currently assigned to your scope.</p>";
+        return;
+      }
+
+      data.submissions.forEach((sub) => {
+        let pillClass = "pill-pending";
+        if (sub.techStatus === "Forwarded to Jury") pillClass = "pill-forwarded";
+        if (sub.techStatus === "Rejected") pillClass = "pill-rejected";
+
+        const card = document.createElement('div');
+        card.className = "sub-card";
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.6rem;">
+            <div>
+              <span class="pill ${pillClass}">${sub.techStatus}</span>
+              <span style="font-weight:700; margin-left:0.5rem; font-family:monospace;">${sub.id}</span>
+              <h3 style="margin-top:0.3rem; color:var(--primary);">${sub.company}</h3>
+              <p style="font-size:0.85rem; color:var(--muted);"><strong>Turnover:</strong> ${sub.turnover} | <strong>Category:</strong> ${sub.category}</p>
+            </div>
+          </div>
+
+          <p style="font-size:0.9rem; margin:0.6rem 0;"><strong>${sub.title}</strong><br>${sub.summary}</p>
+          <div style="background:#f1f5f9; padding:0.5rem; border-radius:6px; font-size:0.82rem; margin-bottom:0.8rem;">
+            <strong>Metrics:</strong> ${sub.metrics}
+          </div>
+
+          <div style="margin-bottom:1rem;">
+            <a href="${sub.dossierUrl}" target="_blank" class="file-btn">📑 View Dossier</a>
+            ${sub.supportingUrl !== 'Not provided' ? `<a href="${sub.supportingUrl}" target="_blank" class="file-btn">📊 View Supporting Deck</a>` : ''}
+          </div>
+
+          <div style="border-top:1px solid var(--border); padding-top:0.8rem; display:grid; grid-template-columns: 2fr 1fr; gap:0.8rem;">
+            <textarea id="tComment_${sub.id}" rows="2" placeholder="Committee screening remarks...">${sub.techComments}</textarea>
+            <div style="display:flex; flex-direction:column; gap:0.4rem;">
+              <select id="tStatus_${sub.id}">
+                <option value="Pending Screening" ${sub.techStatus === 'Pending Screening' ? 'selected' : ''}>Status: Pending</option>
+                <option value="Forwarded to Jury" ${sub.techStatus === 'Forwarded to Jury' ? 'selected' : ''}>Forward to Final Jury</option>
+                <option value="Rejected" ${sub.techStatus === 'Rejected' ? 'selected' : ''}>Reject / Non-compliant</option>
+              </select>
+              <button class="btn" onclick="saveScreening('${sub.id}')" style="padding:0.45rem;">Save Decision</button>
+            </div>
+          </div>
+        `;
+        cont.appendChild(card);
+      });
+    }
 
     async function saveScreening(subId) {
       const status = document.getElementById(`tStatus_${subId}`).value;
