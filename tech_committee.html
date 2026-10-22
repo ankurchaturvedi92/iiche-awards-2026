@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IIChE Awards 2026 | Technical Screening Committee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --primary: #0a2540; --accent: #0284c7; --bg: #f8fafc; --border: #e2e8f0; --success: #10b981; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #0f172a; }
+    header { background: var(--primary); color: white; padding: 1.2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #f59e0b; }
+    .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+    .card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .auth-box { max-width: 440px; margin: 3rem auto; }
+    .btn { background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; font-weight: 700; cursor: pointer; }
+    .sub-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .pill { padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
+    .pill-pending { background: #fef3c7; color: #b45309; }
+    .pill-forwarded { background: #dcfce7; color: #15803d; }
+    .pill-rejected { background: #fee2e2; color: #b91c1c; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div style="font-family:'Space Grotesk',sans-serif; font-size:1.2rem; font-weight:700;">IIChE-MRC Technical Screening Committee</div>
+    <div id="techUserBadge" style="font-size:0.85rem; font-weight:600; display:none;"></div>
+  </header>
+
+  <div class="container">
+    <!-- LOGIN VIEW -->
+    <div class="card auth-box" id="techLoginView">
+      <h2 style="font-size:1.3rem; color:var(--primary); margin-bottom:0.4rem;">Committee Sign In</h2>
+      <p style="font-size:0.85rem; color:#64748b; margin-bottom:1.2rem;">Pre-screening and eligibility verification portal.</p>
+      <form id="techLoginForm">
+        <div style="margin-bottom:1rem;">
+          <label style="font-size:0.85rem; font-weight:600;">Email</label>
+          <input type="email" id="tEmail" required style="width:100%; padding:0.7rem; border:1px solid var(--border); border-radius:6px; margin-top:0.3rem;">
+        </div>
+        <div style="margin-bottom:1rem;">
+          <label style="font-size:0.85rem; font-weight:600;">Password</label>
+          <input type="password" id="tPass" required style="width:100%; padding:0.7rem; border:1px solid var(--border); border-radius:6px; margin-top:0.3rem;">
+        </div>
+        <button type="submit" class="btn" style="width:100%;">Sign In</button>
+      </form>
+    </div>
+
+    <!-- SCREENING DASHBOARD -->
+    <div id="techDashView" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+        <div>
+          <h2 style="color:var(--primary);">Submissions Assigned for Screening</h2>
+          <p style="font-size:0.85rem; color:#64748b;">Review compliance before forwarding entries to the National Jury.</p>
+        </div>
+        <button onclick="location.reload()" style="background:none; border:1px solid #cbd5e1; padding:0.4rem 0.8rem; border-radius:6px; cursor:pointer;">Sign Out</button>
+      </div>
+
+      <div id="techListContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzcBNyJT593YpOLPC03CSJLba8rIj3ycLn8OBc8wO3FhDsdW7SDNdnFf0_TtAYc36Df/exec";
+
+    document.getElementById('techLoginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('tEmail').value.trim();
+      const pass = document.getElementById('tPass').value.trim();
+
+      const resp = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: "tech_login", email: email, password: pass })
+      });
+      const data = await resp.json();
+
+      if (data.status === 'success') {
+        document.getElementById('techLoginView').style.display = 'none';
+        document.getElementById('techDashView').style.display = 'block';
+        document.getElementById('techUserBadge').textContent = `Reviewer: ${data.name} (Scope: ${data.assignedScope})`;
+        document.getElementById('techUserBadge').style.display = 'block';
+
+        const cont = document.getElementById('techListContainer');
+        cont.innerHTML = "";
+
+        if (!data.submissions || data.submissions.length === 0) {
+          cont.innerHTML = "<p style='padding:2rem; text-align:center; color:#64748b;'>No submissions currently assigned to your scope.</p>";
+          return;
+        }
+
+        data.submissions.forEach((sub) => {
+          let pillClass = "pill-pending";
+          if (sub.techStatus === "Forwarded to Jury") pillClass = "pill-forwarded";
+          if (sub.techStatus === "Rejected") pillClass = "pill-rejected";
+
+          const card = document.createElement('div');
+          card.className = "sub-card";
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; margin-bottom:0.6rem;">
+              <div>
+                <span class="pill ${pillClass}">${sub.techStatus}</span>
+                <span style="font-weight:700; margin-left:0.5rem; font-family:monospace;">${sub.id}</span>
+                <h3 style="margin-top:0.3rem; color:var(--primary);">${sub.company}</h3>
+                <p style="font-size:0.85rem; color:#64748b;"><strong>Turnover:</strong> ${sub.turnover} | <strong>Category:</strong> ${sub.category}</p>
+              </div>
+            </div>
+
+            <p style="font-size:0.9rem; margin:0.6rem 0;"><strong>${sub.title}</strong><br>${sub.summary}</p>
+            <div style="background:#f1f5f9; padding:0.5rem; border-radius:6px; font-size:0.82rem; margin-bottom:0.8rem;">
+              <strong>Metrics:</strong> ${sub.metrics}
+            </div>
+
+            <div style="margin-bottom:1rem;">
+              <a href="${sub.dossierUrl}" target="_blank" style="margin-right:1rem; font-size:0.85rem; font-weight:600;">📑 View Dossier</a>
+              ${sub.supportingUrl !== 'Not provided' ? `<a href="${sub.supportingUrl}" target="_blank" style="font-size:0.85rem; font-weight:600;">📊 View Supporting Deck</a>` : ''}
+            </div>
+
+            <!-- Committee Actions -->
+            <div style="border-top:1px solid #e2e8f0; padding-top:0.8rem; display:grid; grid-template-columns: 2fr 1fr; gap:0.8rem;">
+              <textarea id="tComment_${sub.id}" rows="2" placeholder="Committee screening remarks...">${sub.techComments}</textarea>
+              <div style="display:flex; flex-direction:column; gap:0.4rem;">
+                <select id="tStatus_${sub.id}">
+                  <option value="Pending Screening" ${sub.techStatus === 'Pending Screening' ? 'selected' : ''}>Status: Pending</option>
+                  <option value="Forwarded to Jury" ${sub.techStatus === 'Forwarded to Jury' ? 'selected' : ''}>Forward to Final Jury</option>
+                  <option value="Rejected" ${sub.techStatus === 'Rejected' ? 'selected' : ''}>Reject / Non-compliant</option>
+                </select>
+                <button class="btn" onclick="saveScreening('${sub.id}')" style="padding:0.4rem;">Save Decision</button>
+              </div>
+            </div>
+          `;
+          cont.appendChild(card);
+        });
+      } else {
+        alert("Login failed: " + data.message);
+      }
+    });
+
+    async function saveScreening(subId) {
+      const status = document.getElementById(`tStatus_${subId}`).value;
+      const comments = document.getElementById(`tComment_${subId}`).value;
+
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({
+          action: "tech_update_status",
+          submissionId: subId,
+          techStatus: status,
+          techComments: comments
+        })
+      });
+      alert(`Decision recorded for ${subId}.`);
+    }
+  </script>
+</body>
+</html>
