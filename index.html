@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IIChE Industry Awards 2026 | Nomination & Verification Portal</title>
+  <title>IIChE-MRC Industry Awards 2026 | Application Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
@@ -15,469 +15,396 @@
       --bg: #f8fafc;
       --surface: #ffffff;
       --border: #e2e8f0;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
+      --text: #0f172a;
+      --muted: #64748b;
       --success: #10b981;
-      --warning: #f59e0b;
       --radius: 12px;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-      --shadow-md: 0 10px 25px -5px rgba(10,37,64,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); }
+    header { background: var(--primary); color: white; padding: 1.2rem 1.5rem; border-bottom: 3px solid #00c4cc; }
+    .header-container { max-width: 1000px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    main { max-width: 900px; margin: 2rem auto; padding: 0 1rem 4rem; }
+
+    /* SPLASH MODAL OVERLAY (Awards 2026 Title Slide) */
+    #splashModal {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(10, 37, 64, 0.85); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 1rem;
+    }
+    .splash-card {
+      background: white; border-radius: 16px; overflow: hidden; max-width: 820px; width: 100%;
+      display: grid; grid-template-columns: 1.15fr 1fr; position: relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    }
+    @media (max-width: 768px) { .splash-card { grid-template-columns: 1fr; } .splash-img-wrap { display: none; } }
+    .splash-close {
+      position: absolute; top: 12px; right: 14px; background: rgba(0,0,0,0.5); color: white;
+      border: none; width: 34px; height: 34px; border-radius: 50%; font-size: 1.1rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;
+    }
+    .splash-close:hover { background: #ef4444; }
+    .splash-content { padding: 2.5rem 2rem; display: flex; flex-direction: column; justify-content: space-between; }
+    .splash-img-wrap {
+      background: url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+      min-height: 380px; position: relative;
+    }
+    .splash-logo-box {
+      border: 2px solid #0a2540; border-radius: 8px; padding: 6px 12px; display: inline-flex;
+      align-items: center; gap: 8px; font-weight: 800; font-size: 0.85rem; color: #0a2540; margin-bottom: 1.5rem;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.5; }
-
-    header { background: var(--primary); color: white; padding: 1.5rem 1rem; border-bottom: 3px solid #00c4cc; }
-    .header-container { max-width: 1000px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
-    .brand-wrap { display: flex; align-items: center; gap: 1rem; }
-    .brand-badge { background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.25); padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: #38bdf8; }
-    .header-titles h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 700; }
-    .header-titles p { color: #94a3b8; font-size: 0.85rem; }
-
-    main { max-width: 900px; margin: 2.5rem auto; padding: 0 1rem 4rem; }
-
-    /* Mode Banner */
-    .banner-tabs { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-    .mode-btn { background: #e2e8f0; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; color: var(--text-muted); }
+    /* Tabs & Form */
+    .banner-tabs { display: flex; gap: 0.8rem; margin-bottom: 1.5rem; }
+    .mode-btn { background: #e2e8f0; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; color: var(--muted); }
     .mode-btn.active { background: var(--primary); color: white; }
 
-    .intro-card { background: white; border-radius: var(--radius); padding: 2rem; border: 1px solid var(--border); box-shadow: var(--shadow-sm); margin-bottom: 1.5rem; }
-    .badge-pill { display: inline-block; padding: 0.25rem 0.75rem; background: #e0f2fe; color: #0369a1; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.75rem; }
-    .intro-card h2 { font-size: 1.6rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem; }
-    .intro-card p { color: var(--text-muted); font-size: 0.95rem; }
-
-    .lock-notice { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 0.85rem 1rem; font-size: 0.85rem; color: #92400e; display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.5rem; }
-
-    .form-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm); }
-    .section-title { font-size: 1.15rem; font-weight: 700; color: var(--primary); margin-bottom: 0.4rem; display: flex; align-items: center; justify-content: space-between; }
-    .section-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; }
-
+    .form-section { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin-bottom: 1.5rem; }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
     @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
     .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
     .form-group.full-width { grid-column: 1 / -1; }
-
-    label { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
-    label span.required { color: #ef4444; }
-    input, select, textarea { width: 100%; padding: 0.75rem 0.9rem; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; background: #fafafa; }
-    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); background: #ffffff; box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.12); }
-
-    .word-counter { font-size: 0.75rem; color: var(--text-muted); text-align: right; margin-top: 0.25rem; }
-    .word-counter.warning { color: #dc2626; font-weight: 700; }
-
-    .category-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 0.5rem; }
-    .category-card { border: 2px solid var(--border); border-radius: 10px; padding: 1.25rem; cursor: pointer; position: relative; background: #fafafa; }
-    .category-card input[type="radio"] { position: absolute; top: 1rem; right: 1rem; width: auto; }
-    .category-card.selected { border-color: var(--accent); background: #f0f7ff; }
-    .cat-tag { font-weight: 700; font-size: 0.75rem; text-transform: uppercase; color: var(--accent); }
-    .cat-name { font-weight: 700; font-size: 1rem; color: var(--primary); margin: 0.25rem 0; }
-    .cat-desc { font-size: 0.8rem; color: var(--text-muted); }
-
-    .template-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 0.9rem; display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-    .template-btn { background: #16a34a; color: white; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; }
-
+    label { font-size: 0.85rem; font-weight: 600; }
+    input, select, textarea { width: 100%; padding: 0.75rem 0.9rem; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; }
+    .btn-submit { background: var(--accent-gradient); color: white; border: none; padding: 1rem 3rem; border-radius: 9999px; font-weight: 700; cursor: pointer; font-size: 1rem; }
+    
     .file-dropzone { border: 2px dashed #cbd5e1; border-radius: 10px; padding: 1.5rem; text-align: center; background: #f8fafc; cursor: pointer; position: relative; }
     .file-dropzone input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
-    .file-meta-preview { margin-top: 0.6rem; font-size: 0.8rem; font-weight: 600; color: var(--accent); display: none; }
-
-    .submit-wrap { display: flex; flex-direction: column; align-items: center; gap: 1rem; margin-top: 2rem; }
-    .submit-btn { background: var(--accent-gradient); color: white; border: none; padding: 1.1rem 3rem; border-radius: 9999px; font-size: 1.05rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 112, 243, 0.3); }
-    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    .modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 37, 64, 0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
-    .modal-box { background: white; border-radius: var(--radius); padding: 2.5rem; max-width: 500px; width: 100%; text-align: center; box-shadow: var(--shadow-md); }
-    .modal-btn { margin-top: 1.5rem; padding: 0.6rem 1.8rem; border-radius: 8px; background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; }
+    .file-preview { margin-top: 0.5rem; font-size: 0.8rem; font-weight: 600; color: var(--accent); display: none; }
+    
+    /* Gate Box */
+    .gate-card { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 1.2rem; margin-bottom: 1.5rem; }
+    .gate-contacts { background: white; border-radius: 8px; padding: 0.8rem; margin-top: 0.6rem; border: 1px solid #fef3c7; }
   </style>
 </head>
 <body>
 
+  <!-- 1. SPLASH MODAL -->
+  <div id="splashModal">
+    <div class="splash-card">
+      <button class="splash-close" onclick="closeSplash()">✕</button>
+      <div class="splash-content">
+        <div>
+          <div class="splash-logo-box">
+            <span>⚙️</span> IIChE - MRC
+          </div>
+          <h1 style="font-family:'Space Grotesk',sans-serif; font-size:1.8rem; line-height:1.2; color:var(--primary); margin-bottom:0.8rem;">
+            IIChE-MRC<br>Industry Awards<br>-2026
+          </h1>
+          <p style="font-weight:700; color:var(--accent); font-size:0.95rem; margin-bottom:0.5rem;">
+            Award Categories and Application Forms
+          </p>
+          <p style="font-size:0.82rem; color:var(--muted); line-height:1.5;">
+            Recognizing the Chemical and Petrochemical Industry for intensifying processes to improve efficiency, manage safety, and protect the environment.
+          </p>
+        </div>
+        <button onclick="closeSplash()" style="background:var(--primary); color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; font-weight:700; cursor:pointer; margin-top:1.5rem;">
+          Enter Application Portal →
+        </button>
+      </div>
+      <div class="splash-img-wrap"></div>
+    </div>
+  </div>
+
   <header>
     <div class="header-container">
-      <div class="brand-wrap">
-        <div class="brand-badge">IIChE Apex</div>
-        <div class="header-titles">
-          <h1>IIChE Industry Awards 2026</h1>
-          <p>Indian Institute of Chemical Engineers | Official Industry Submissions</p>
-        </div>
-      </div>
+      <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.2rem;">IIChE-MRC Industry Awards 2026</h2>
+      <span style="font-size:0.8rem; background:rgba(255,255,255,0.15); padding:0.3rem 0.6rem; border-radius:4px;">Official Portal</span>
     </div>
   </header>
 
   <main>
-    <!-- Tab Controls: New Submission vs Edit Coordinates -->
     <div class="banner-tabs">
-      <button class="mode-btn active" id="tabNew" onclick="setMode('new')">New Nomination Submission</button>
-      <button class="mode-btn" id="tabEdit" onclick="setMode('edit')">Correct / Edit Existing Coordinates</button>
+      <button class="mode-btn active" id="tabNew" onclick="setMode('new')">New Application</button>
+      <button class="mode-btn" id="tabEdit" onclick="setMode('edit')">Submit Revised Entry</button>
     </div>
 
-    <div class="lock-notice">
-      <span>🔒</span>
-      <div><strong>Audit Lock Policy:</strong> To ensure evaluation impartiality, uploaded dossiers & presentations cannot be modified or deleted post-submission. Only applicant coordinates and summary notes may be updated.</div>
-    </div>
-
-    <!-- MAIN SUBMISSION / EDIT FORM -->
-    <form id="awardForm">
-      <input type="hidden" id="actionField" value="new">
-
-      <!-- Edit Verification Box (Only visible in edit mode) -->
-      <section class="form-section" id="editVerificationSection" style="display:none; background:#eff6ff; border-color:#bfdbfe;">
-        <h3 class="section-title">Submission Identification</h3>
-        <p class="section-subtitle">Enter the Submission ID and Email provided in your submission confirmation.</p>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Submission ID <span class="required">*</span></label>
-            <input type="text" id="editSubmissionId" placeholder="e.g. IIChE-AWD-20261019-123456">
-          </div>
-          <div class="form-group">
-            <label>Registered Email <span class="required">*</span></label>
-            <input type="email" id="editEmail" placeholder="nominee@company.com">
-          </div>
+    <!-- REVISED ENTRY GATE (Controlled by Ankur C / Anagha Dalal) -->
+    <div id="editGateSection" style="display:none;">
+      <div class="gate-card">
+        <h3 style="color:#92400e; font-size:1.05rem;">🔒 Revised Submission Permission Check</h3>
+        <p style="font-size:0.85rem; color:#78350f; margin-top:0.3rem;">
+          To prevent unauthorized alterations to competition dossiers, editing an existing submission requires administrative clearance.
+        </p>
+        <div class="gate-contacts">
+          <p style="font-size:0.85rem; font-weight:700; color:var(--primary); margin-bottom:0.3rem;">For Edit Authorization, Contact:</p>
+          <ul style="font-size:0.85rem; list-style:none; line-height:1.6;">
+            <li>📞 <strong>Ankur Chaturvedi:</strong> <a href="tel:+919324154363">+91-9324154363</a></li>
+            <li>📞 <strong>Anagha Dalal:</strong> <a href="tel:+919820339300">+91-9820339300</a></li>
+          </ul>
         </div>
-      </section>
-
-      <!-- Section 1: Company Profile & Turnover -->
-      <section class="form-section">
-        <h3 class="section-title">1. Organization, Turnover & Coordinates</h3>
-        <p class="section-subtitle">Define enterprise turnover scale and contact coordinates.</p>
         
-        <div class="form-grid">
+        <div class="form-grid" style="margin-top:1rem;">
           <div class="form-group">
-            <label>Company / Organization Name <span class="required">*</span></label>
-            <input type="text" name="companyName" placeholder="e.g. Reliance Industries Ltd / MSME Enterprise" required>
+            <label>Serial Submission ID (e.g. IIChE-2026-001)</label>
+            <input type="text" id="checkSubId" placeholder="IIChE-2026-001">
           </div>
-
           <div class="form-group">
-            <label>Annual Turnover Category <span class="required">*</span></label>
-            <select name="turnover" required>
-              <option value="">Select Turnover Range</option>
-              <option value="Micro / Small (< ₹50 Cr)">Micro / Small (Below ₹50 Crore)</option>
-              <option value="Medium (₹50 Cr - ₹250 Cr)">Medium Enterprise (₹50 Cr to ₹250 Crore)</option>
-              <option value="Mid-Corporate (₹250 Cr - ₹1000 Cr)">Mid-Corporate (₹250 Cr to ₹1,000 Crore)</option>
-              <option value="Large Enterprise (> ₹1000 Cr)">Large Enterprise (Above ₹1,000 Crore)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Industry Sector <span class="required">*</span></label>
-            <select name="sector" required>
-              <option value="">Select industry domain</option>
-              <option value="Petrochemicals & Refining">Petrochemicals & Refining</option>
-              <option value="Fertilizers & Agro-chemicals">Fertilizers & Agro-chemicals</option>
-              <option value="Specialty & Fine Chemicals">Specialty & Fine Chemicals</option>
-              <option value="Pharmaceuticals & Biotech">Pharmaceuticals & Biotech</option>
-              <option value="Renewable Energy & Green H2">Renewable Energy & Green Hydrogen</option>
-              <option value="Other Process Industry">Other Process Industries</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Authorized Nominee Name <span class="required">*</span></label>
-            <input type="text" name="nomineeName" placeholder="Dr. / Mr. / Ms. Full Name" required>
-          </div>
-
-          <div class="form-group" id="primaryEmailGroup">
-            <label>Official Email Address <span class="required">*</span></label>
-            <input type="email" name="email" placeholder="representative@company.com" required>
-          </div>
-
-          <div class="form-group">
-            <label>Contact Mobile / Phone <span class="required">*</span></label>
-            <input type="tel" name="phone" placeholder="+91 98765 43210" required>
+            <label>Registered Company Email</label>
+            <input type="email" id="checkEmail" placeholder="nominee@company.com">
           </div>
         </div>
-      </section>
-
-      <!-- Section 2: Award Category -->
-      <section class="form-section" id="categorySection">
-        <h3 class="section-title">2. Award Category</h3>
-        <p class="section-subtitle">Select the vertical for evaluation.</p>
-
-        <div class="category-options">
-          <label class="category-card selected">
-            <input type="radio" name="category" value="Category A - Industrial Innovation" checked>
-            <span class="cat-tag">Category A</span>
-            <div class="cat-name">Industrial Innovation</div>
-            <p class="cat-desc">Novel chemical processes, indigenous engineering, and patents.</p>
-          </label>
-
-          <label class="category-card">
-            <input type="radio" name="category" value="Category B - ESG & Sustainability">
-            <span class="cat-tag">Category B</span>
-            <div class="cat-name">ESG & Sustainability</div>
-            <p class="cat-desc">Net-zero milestones, circularity, carbon capture, and ZLD systems.</p>
-          </label>
-
-          <label class="category-card">
-            <input type="radio" name="category" value="Category C - Process Safety Excellence">
-            <span class="cat-tag">Category C</span>
-            <div class="cat-name">Process Safety & PSM</div>
-            <p class="cat-desc">Zero LTI records, process safety management, and digital HAZOP.</p>
-          </label>
-        </div>
-      </section>
-
-      <!-- Section 3: Narrative & Template Download -->
-      <section class="form-section">
-        <h3 class="section-title">3. Nomination Narrative & Impact Metrics</h3>
-        <p class="section-subtitle">Executive summary (up to 1,000 words) and standardized quantitative metrics.</p>
-
-        <!-- Template matrix notice -->
-        <div class="template-box">
-          <div>
-            <div style="font-weight:700; font-size:0.85rem; color:#166534;">Standardized IIChE Metrics Matrix</div>
-            <div style="font-size:0.75rem; color:#15803d;">Download the blank template, input your data, and attach it in Section 4 below.</div>
-          </div>
-          <a href="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/copy" target="_blank" class="template-btn">
-            📄 Get Template Copy
-          </a>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-group full-width">
-            <label>Project / Initiative Title <span class="required">*</span></label>
-            <input type="text" name="projectTitle" placeholder="e.g. Commercial Deployment of Catalytic VOC Abatement" required>
-          </div>
-
-          <div class="form-group full-width">
-            <label>Executive Summary (Max 1,000 Words) <span class="required">*</span></label>
-            <textarea name="summary" id="summaryArea" rows="8" placeholder="Detailed narrative describing the innovation, technological complexity, lifecycle deployment, and commercial advantages..." required></textarea>
-            <div class="word-counter" id="wordCountDisplay">0 / 1000 words</div>
-          </div>
-
-          <div class="form-group full-width">
-            <label>Key Metrics, ROI & Carbon Offsets <span class="required">*</span></label>
-            <textarea name="metrics" rows="3" placeholder="Summary points of efficiency metrics, Capex/Opex payback, and environmental credits..." required></textarea>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 4: File Dossiers (Hidden when in Edit mode) -->
-      <section class="form-section" id="uploadSection">
-        <h3 class="section-title">4. Comprehensive Dossier & Supporting Files</h3>
-        <p class="section-subtitle">Accepts Word (.doc, .docx), PDF, PPT/PPTX, and Images (Max 12 MB each). <em>Files lock permanently upon submission.</em></p>
-
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Main Nomination Dossier (Word / PDF) <span class="required">*</span></label>
-            <div class="file-dropzone" id="dossierZone">
-              <input type="file" id="dossierInput" accept=".pdf,.doc,.docx,.rtf" required>
-              <div style="font-size:1.8rem; margin-bottom:0.4rem;">📑</div>
-              <div style="font-weight:600; font-size:0.85rem;">Click or drag Dossier</div>
-              <div style="font-size:0.75rem; color:var(--text-muted);">Word (.doc, .docx) or PDF format</div>
-              <div class="file-meta-preview" id="dossierMeta"></div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Presentation Deck / Metrics Sheet / Visuals</label>
-            <div class="file-dropzone" id="presZone">
-              <input type="file" id="presInput" accept=".ppt,.pptx,.pdf,.xlsx,.xls,.jpg,.jpeg,.png">
-              <div style="font-size:1.8rem; margin-bottom:0.4rem;">📊</div>
-              <div style="font-weight:600; font-size:0.85rem;">Click or drag Deck or Sheet</div>
-              <div style="font-size:0.75rem; color:var(--text-muted);">PPT, PPTX, Excel, Images, or PDF</div>
-              <div class="file-meta-preview" id="presMeta"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="submit-wrap">
-        <button type="submit" class="submit-btn" id="submitBtn">
-          <span>Submit Nomination Dossier</span>
+        <button type="button" onclick="verifyEditAccess()" style="background:#b45309; color:white; border:none; padding:0.7rem 1.5rem; border-radius:6px; font-weight:700; margin-top:0.8rem; cursor:pointer;">
+          Verify & Unlock Edit Form
         </button>
-        <div id="statusIndicator" style="font-size:0.9rem; font-weight:600; color:var(--accent);"></div>
+        <p id="gateFeedback" style="font-size:0.85rem; font-weight:600; margin-top:0.6rem; display:none;"></p>
+      </div>
+    </div>
+
+    <!-- MAIN FORM -->
+    <form id="submissionForm">
+      <input type="hidden" id="formMode" value="new">
+
+      <section class="form-section">
+        <h3 style="font-size:1.1rem; color:var(--primary); margin-bottom:1rem;">1. Organization & Representative Details</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Company Name *</label>
+            <input type="text" name="companyName" id="f_company" required>
+          </div>
+          <div class="form-group">
+            <label>Turnover Bracket *</label>
+            <select name="turnover" id="f_turnover" required>
+              <option value="">Select turnover bracket</option>
+              <option value="INR < 150 Cr">INR &lt; 150 Crore</option>
+              <option value="INR 150 - 1000 Cr">INR 150 to 1,000 Crore</option>
+              <option value="INR > 1000 Cr">INR &gt; 1,000 Crore</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Industry Segment *</label>
+            <select name="sector" id="f_sector" required>
+              <option value="">Select segment</option>
+              <option value="Chemicals">Chemicals</option>
+              <option value="Petrochemicals">Petrochemicals</option>
+              <option value="Pharmaceuticals & Specialty">Pharmaceuticals, Specialty & Fine Chemicals</option>
+              <option value="Agro & Dyes">Agro, Dyes, Fragrance & Allied</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Authorized Nominee / Lead Person *</label>
+            <input type="text" name="nomineeName" id="f_nominee" required>
+          </div>
+          <div class="form-group">
+            <label>Official Email *</label>
+            <input type="email" name="email" id="f_email" required>
+          </div>
+          <div class="form-group">
+            <label>Mobile Number *</label>
+            <input type="tel" name="phone" id="f_phone" required>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-section" id="catSection">
+        <h3 style="font-size:1.1rem; color:var(--primary); margin-bottom:1rem;">2. Award Category</h3>
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <select name="category" id="f_category" required>
+              <option value="Category 1 - Winner Medium Scale (< INR 150 Cr)">Category 1 - Winner Medium Scale (&lt; INR 150 Cr)</option>
+              <option value="Category 2 - Winner Large Scale (INR 150 Cr and above)">Category 2 - Winner Large Scale (INR 150 Cr and above)</option>
+              <option value="Category 3 - Special Safety Award (Common)">Category 3 - Special Safety Award (Common)</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <h3 style="font-size:1.1rem; color:var(--primary); margin-bottom:1rem;">3. Initiative Summary & Impact Metrics</h3>
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label>Project / Initiative Title *</label>
+            <input type="text" name="projectTitle" id="f_title" required>
+          </div>
+          <div class="form-group full-width">
+            <label>Executive Summary (Up to 1,000 words) *</label>
+            <textarea name="summary" id="f_summary" rows="7" required></textarea>
+          </div>
+          <div class="form-group full-width">
+            <label>Quantifiable Metrics & ROI Impact *</label>
+            <textarea name="metrics" id="f_metrics" rows="3" required></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- File section -->
+      <section class="form-section" id="filesSection">
+        <h3 style="font-size:1.1rem; color:var(--primary); margin-bottom:1rem;">4. Attach Dossier & Questionnaire (Max 12 MB)</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nomination Questionnaire / Dossier (Word / PDF) *</label>
+            <div class="file-dropzone">
+              <input type="file" id="dossierInput" accept=".pdf,.doc,.docx" required>
+              <p>Click or drag Questionnaire / Dossier</p>
+              <div class="file-preview" id="dossierPreview"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Supporting Presentation / Proofs (PPT / PDF / Images)</label>
+            <div class="file-dropzone">
+              <input type="file" id="presInput" accept=".ppt,.pptx,.pdf,.jpg,.jpeg,.png">
+              <p>Click or drag Presentation / Proofs</p>
+              <div class="file-preview" id="presPreview"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div style="text-align:center; margin-top:2rem;">
+        <button type="submit" class="btn-submit" id="submitBtn">Submit Application</button>
+        <p id="submitStatus" style="font-size:0.85rem; color:var(--muted); margin-top:0.6rem;"></p>
       </div>
     </form>
   </main>
 
-  <!-- Modal Confirmation -->
-  <div class="modal-backdrop" id="modalBackdrop">
-    <div class="modal-box">
-      <div style="font-size:2rem; color:var(--success); margin-bottom:0.8rem;">✓</div>
-      <h3 style="color:var(--primary); font-size:1.3rem; margin-bottom:0.5rem;" id="modalTitle">Submission Successful</h3>
-      <p style="color:var(--text-muted); font-size:0.85rem;" id="modalBody">Your documents are now permanently archived in Google Drive and queued for the jury panel.</p>
-      <div style="background:#f1f5f9; padding:0.75rem; border-radius:8px; margin:1.2rem 0; font-family:monospace; font-weight:700; color:var(--primary);" id="displaySubId"></div>
-      <button class="modal-btn" onclick="closeModal()">Close</button>
-    </div>
-  </div>
-
   <script>
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzcBNyJT593YpOLPC03CSJLba8rIj3ycLn8OBc8wO3FhDsdW7SDNdnFf0_TtAYc36Df/exec";
 
-    // Word counter for 1000 words
-    const summaryArea = document.getElementById('summaryArea');
-    const wordCountDisplay = document.getElementById('wordCountDisplay');
+    function closeSplash() {
+      document.getElementById('splashModal').style.display = 'none';
+    }
 
-    summaryArea.addEventListener('input', () => {
-      const words = summaryArea.value.trim().split(/\s+/).filter(w => w.length > 0);
-      const count = words.length;
-      wordCountDisplay.textContent = `${count} / 1000 words`;
-      if (count > 1000) {
-        wordCountDisplay.classList.add('warning');
-      } else {
-        wordCountDisplay.classList.remove('warning');
-      }
-    });
-
-    // Mode Toggle (New vs Edit)
     function setMode(mode) {
-      const tabNew = document.getElementById('tabNew');
-      const tabEdit = document.getElementById('tabEdit');
-      const editSec = document.getElementById('editVerificationSection');
-      const uploadSec = document.getElementById('uploadSection');
-      const categorySec = document.getElementById('categorySection');
-      const submitBtnSpan = document.querySelector('#submitBtn span');
-      const actionField = document.getElementById('actionField');
-      const dossierInput = document.getElementById('dossierInput');
+      const isEdit = mode === 'edit';
+      document.getElementById('tabNew').classList.toggle('active', !isEdit);
+      document.getElementById('tabEdit').classList.toggle('active', isEdit);
+      document.getElementById('editGateSection').style.display = isEdit ? 'block' : 'none';
+      document.getElementById('filesSection').style.display = isEdit ? 'none' : 'block';
+      document.getElementById('catSection').style.display = isEdit ? 'none' : 'block';
+      document.getElementById('dossierInput').required = !isEdit;
+      document.getElementById('formMode').value = isEdit ? 'edit' : 'new';
+      document.getElementById('submitBtn').textContent = isEdit ? 'Submit Revised Application' : 'Submit Application';
 
-      if (mode === 'edit') {
-        tabNew.classList.remove('active');
-        tabEdit.classList.add('active');
-        editSec.style.display = 'block';
-        uploadSec.style.display = 'none'; // Lock out file uploads
-        categorySec.style.display = 'none';
-        dossierInput.removeAttribute('required');
-        submitBtnSpan.textContent = "Update Coordinates & Narrative";
-        actionField.value = "update";
+      if (isEdit) {
+        document.getElementById('submissionForm').style.opacity = '0.5';
+        document.getElementById('submitBtn').disabled = true;
       } else {
-        tabEdit.classList.remove('active');
-        tabNew.classList.add('active');
-        editSec.style.display = 'none';
-        uploadSec.style.display = 'block';
-        categorySec.style.display = 'block';
-        dossierInput.setAttribute('required', 'required');
-        submitBtnSpan.textContent = "Submit Nomination Dossier";
-        actionField.value = "new";
+        document.getElementById('submissionForm').style.opacity = '1';
+        document.getElementById('submitBtn').disabled = false;
+        document.getElementById('submissionForm').reset();
       }
     }
 
-    // Category Selector
-    document.querySelectorAll('.category-card input').forEach(input => {
-      input.addEventListener('change', () => {
-        document.querySelectorAll('.category-card').forEach(c => c.classList.remove('selected'));
-        input.closest('.category-card').classList.add('selected');
-      });
-    });
+    async function verifyEditAccess() {
+      const subId = document.getElementById('checkSubId').value.trim();
+      const email = document.getElementById('checkEmail').value.trim();
+      const feedback = document.getElementById('gateFeedback');
 
-    // File Preview
-    function bindFilePreview(inputId, metaId) {
-      const input = document.getElementById(inputId);
-      const meta = document.getElementById(metaId);
-      input.addEventListener('change', () => {
-        if (input.files.length > 0) {
-          const file = input.files[0];
-          const mb = (file.size / (1024 * 1024)).toFixed(2);
-          if (file.size > 12 * 1024 * 1024) {
-            alert("File exceeds maximum allowed size of 12MB. Please compress.");
-            input.value = "";
-            meta.style.display = "none";
-            return;
-          }
-          meta.textContent = `${file.name} (${mb} MB)`;
-          meta.style.display = "block";
-        } else {
-          meta.style.display = "none";
-        }
-      });
-    }
-    bindFilePreview('dossierInput', 'dossierMeta');
-    bindFilePreview('presInput', 'presMeta');
-
-    function toBase64(file) {
-      return new Promise((resolve, reject) => {
-        if (!file) return resolve(null);
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve({
-          name: file.name,
-          mimeType: file.type || "application/octet-stream",
-          data: reader.result
-        });
-        reader.onerror = error => reject(error);
-      });
-    }
-
-    // Form Submission
-    const form = document.getElementById('awardForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const statusIndicator = document.getElementById('statusIndicator');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      // Check word count limit
-      const words = summaryArea.value.trim().split(/\s+/).filter(w => w.length > 0);
-      if (words.length > 1000) {
-        alert("Executive summary exceeds the 1,000-word limit. Please shorten it before submitting.");
+      if (!subId || !email) {
+        alert("Please enter both Serial Submission ID and Email.");
         return;
       }
 
-      const mode = document.getElementById('actionField').value;
-      submitBtn.disabled = true;
-      statusIndicator.textContent = "Processing and archiving with IIChE Registry...";
+      feedback.style.display = "block";
+      feedback.style.color = "var(--primary)";
+      feedback.textContent = "Checking authorization...";
+
+      const resp = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: "check_edit_permission", submissionId: subId, email: email })
+      });
+      const res = await resp.json();
+
+      if (res.status === 'unlocked') {
+        feedback.style.color = "var(--success)";
+        feedback.textContent = "✔ Authorized! Form unlocked for correction.";
+        document.getElementById('submissionForm').style.opacity = '1';
+        document.getElementById('submitBtn').disabled = false;
+
+        document.getElementById('f_company').value = res.data.companyName;
+        document.getElementById('f_nominee').value = res.data.nomineeName;
+        document.getElementById('f_phone').value = res.data.phone;
+        document.getElementById('f_email').value = email;
+        document.getElementById('f_title').value = res.data.projectTitle;
+        document.getElementById('f_summary').value = res.data.summary;
+        document.getElementById('f_metrics').value = res.data.metrics;
+      } else {
+        feedback.style.color = "#dc2626";
+        feedback.textContent = res.message;
+      }
+    }
+
+    function bindFilePreview(inputId, previewId) {
+      const input = document.getElementById(inputId);
+      const prev = document.getElementById(previewId);
+      input.addEventListener('change', () => {
+        if (input.files.length) {
+          prev.textContent = `${input.files[0].name} (${(input.files[0].size / (1024*1024)).toFixed(2)} MB)`;
+          prev.style.display = "block";
+        } else {
+          prev.style.display = "none";
+        }
+      });
+    }
+    bindFilePreview('dossierInput', 'dossierPreview');
+    bindFilePreview('presInput', 'presPreview');
+
+    function toBase64(file) {
+      return new Promise((resolve) => {
+        if (!file) return resolve(null);
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve({ name: file.name, mimeType: file.type || "application/octet-stream", data: reader.result });
+      });
+    }
+
+    document.getElementById('submissionForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const status = document.getElementById('submitStatus');
+      const mode = document.getElementById('formMode').value;
+
+      btn.disabled = true;
+      btn.textContent = "Processing...";
+      status.textContent = "Archiving entry...";
 
       try {
         let payload = {
-          action: mode,
-          companyName: form.companyName.value,
-          turnover: form.turnover.value,
-          sector: form.sector.value,
-          nomineeName: form.nomineeName.value,
-          email: mode === 'edit' ? document.getElementById('editEmail').value : form.email.value,
-          phone: form.phone.value,
-          projectTitle: form.projectTitle.value,
-          summary: form.summary.value,
-          metrics: form.metrics.value
+          companyName: document.getElementById('f_company').value,
+          nomineeName: document.getElementById('f_nominee').value,
+          email: document.getElementById('f_email').value,
+          phone: document.getElementById('f_phone').value,
+          projectTitle: document.getElementById('f_title').value,
+          summary: document.getElementById('f_summary').value,
+          metrics: document.getElementById('f_metrics').value
         };
 
         if (mode === 'edit') {
-          payload.submissionId = document.getElementById('editSubmissionId').value.trim();
-          if (!payload.submissionId) {
-            alert("Please enter your Submission ID to make edits.");
-            submitBtn.disabled = false;
-            return;
-          }
+          payload.action = "update_submission";
+          payload.submissionId = document.getElementById('checkSubId').value.trim();
         } else {
-          payload.category = form.category.value;
+          payload.action = "new_submission";
+          payload.turnover = document.getElementById('f_turnover').value;
+          payload.sector = document.getElementById('f_sector').value;
+          payload.category = document.getElementById('f_category').value;
           payload.dossierFile = await toBase64(document.getElementById('dossierInput').files[0]);
           payload.presentationFile = await toBase64(document.getElementById('presInput').files[0]);
         }
 
-        await fetch(GOOGLE_SCRIPT_URL, {
+        const resp = await fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'text/plain' },
           body: JSON.stringify(payload)
         });
+        const res = await resp.json();
 
-        // Feedback modal
-        if (mode === 'edit') {
-          document.getElementById('modalTitle').textContent = "Coordinates Updated";
-          document.getElementById('modalBody').textContent = "Your contact details and narrative have been updated. Dossiers remain locked in place.";
-          document.getElementById('displaySubId').textContent = payload.submissionId;
+        if (res.status === 'success') {
+          if (mode === 'edit') {
+            alert("Revision saved successfully and re-locked.");
+          } else {
+            alert(`Application Submitted! Your Serial ID is: ${res.submissionId}`);
+          }
+          window.location.reload();
         } else {
-          document.getElementById('modalTitle').textContent = "Nomination Received";
-          document.getElementById('modalBody').textContent = "Your dossier is safely archived. Note down your Submission ID below in case you need to correct your contact details later:";
-          document.getElementById('displaySubId').textContent = "IIChE-AWD-" + Date.now().toString().slice(-6);
+          alert("Error: " + res.message);
         }
-
-        document.getElementById('modalBackdrop').style.display = "flex";
-        form.reset();
-        document.getElementById('dossierMeta').style.display = "none";
-        document.getElementById('presMeta').style.display = "none";
-        wordCountDisplay.textContent = "0 / 1000 words";
-
       } catch (err) {
-        alert("Error: " + err.message);
+        alert("Submission failed: " + err.message);
       } finally {
-        submitBtn.disabled = false;
-        statusIndicator.textContent = "";
+        btn.disabled = false;
+        btn.textContent = "Submit Application";
       }
     });
-
-    function closeModal() {
-      document.getElementById('modalBackdrop').style.display = "none";
-    }
   </script>
 </body>
 </html>
